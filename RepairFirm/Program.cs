@@ -1,3 +1,4 @@
+using EfCoreRepository;
 using RepairFirm.Shared.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 builder.Services.AddControllers();
+builder.Services.AddSingleton(new RepairDbContext());
 
 var loginData = builder.Configuration.GetSection("LoginAccount");
 builder.Services.AddSingleton(loginData.Get<LoginData>());
