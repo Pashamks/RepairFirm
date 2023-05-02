@@ -1,0 +1,86 @@
+﻿@{
+   Layout=null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Login V12</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<script>
+
+  function Validate() {
+
+    $.ajax(
+    {
+      type: "POST",
+      url: '@Url.Action("Validate", "User")',
+      data: {
+        email: $('#Name').val(),
+        password: $('#Password').val()
+        phoneNumber: $('#PhoneNumber').val()
+      },
+      error: function (result) {
+        alert("There is a Problem, Try Again!");
+      },
+      success: function (result) {
+        console.log(result);
+        if (result.status == true) {
+          window.location.href = '@Url.Action("Index", "Home")';
+        }
+        else {
+          alert(result.message);
+        }
+      }
+
+    });
+  }
+
+</script>
+<body>
+  
+  <div class="limiter">
+    <div class="container-login100" style="background-image: url('../images/img-01.jpg');">
+      <div class="wrap-login100 p-t-50 p-b-0">
+          <h1>Увійдіть</h1>
+        <form class="login100-form validate-form" method="post" action="Validate">
+
+          <div class="wrap-input100 validate-input m-b-10" data-validate = "Email is required">
+            <input class="input100" type="text" name="Name" id="Name" placeholder="Name">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-user"></i>
+            </span>
+          </div>
+
+          <div class="wrap-input100 validate-input m-b-10" data-validate = "Password is required">
+            <input class="input100" type="text" name="Password" id="Password" placeholder="Password">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-lock"></i>
+            </span>
+
+          </div>
+          <div class="wrap-input100 validate-input m-b-10" data-validate = "Phone number">
+            <input class="input100" type="text" name="PhoneNumber" id="PhoneNumber" placeholder="PhoneNumber">
+            <span class="focus-input100"></span>
+            <span class="symbol-input100">
+              <i class="fa fa-lock"></i>
+            </span>
+          </div>
+
+          <div class="container-login100-form-btn p-t-10">
+            <button type="submit" class="login100-form-btn" >Увійдіть</button>
+            <a href="Register">Нажміть тут щоб зареєструватися</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+</body>
+</html>
