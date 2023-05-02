@@ -10,4 +10,8 @@
     <Folder Include="Views\Home\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\RepairFirm.Shared\RepairFirm.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

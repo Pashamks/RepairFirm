@@ -1,9 +1,14 @@
+using RepairFirm.Shared.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 builder.Services.AddControllers();
+
+var loginData = builder.Configuration.GetSection("LoginAccount");
+builder.Services.AddSingleton(loginData.Get<LoginData>());
 
 var app = builder.Build();
 
