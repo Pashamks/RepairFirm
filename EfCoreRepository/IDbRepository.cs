@@ -9,5 +9,6 @@ namespace EfCoreRepository
         public List<RepairServicesFactModel> GetRepairServicesFacts();
         public List<RepairCountChartData> GetRepairCountChart();
         public List<DepartmentContractData> GetDepartmentServices();
+        public List<DepartmentPaymentData> GetDepartmentPayments();
     }
 }

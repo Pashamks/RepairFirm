@@ -12,6 +12,11 @@ namespace EfCoreRepository
             _connection = connection;
         }
 
+        public List<DepartmentPaymentData> GetDepartmentPayments()
+        {
+            return _connection.Query<DepartmentPaymentData>("get_department_and_price", commandType: CommandType.StoredProcedure).ToList();
+        }
+
         public List<DepartmentContractData> GetDepartmentServices()
         {
             return _connection.Query<DepartmentContractData>("get_department_and_count", commandType: CommandType.StoredProcedure).ToList();
