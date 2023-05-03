@@ -236,4 +236,120 @@ namespace EfCoreRepository.Models
         public DateTime CreateDate { get; set; }
         public DateTime? UpdateDate { get; set; }
     }
+
+    /*
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     * 
+     */
+
+    public class DimDate
+    {
+        public int DateKey { get; set; }
+        public int Day { get; set; }
+        public int Month { get; set; }
+        public int Year { get; set; }
+    }
+
+    public class DimCity
+    {
+        public int CityKey { get; set; }
+        public int CityId { get; set; }
+        public string CityName { get; set; }
+    }
+
+    public class DimDepartment
+    {
+        public int DepartmentKey { get; set; }
+        public int DepartmentId { get; set; }
+        public int CityId { get; set; }
+        public string Address { get; set; }
+
+        public virtual DimCity City { get; set; }
+    }
+
+    public class DimClient
+    {
+        public int ClientKey { get; set; }
+        public int ClientId { get; set; }
+        public string FullName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNumber { get; set; }
+    }
+
+    public class DimApartment
+    {
+        public int ApartmentKey { get; set; }
+        public int ApartmentId { get; set; }
+        public int ClientId { get; set; }
+        public int CityId { get; set; }
+        public int RoomsCount { get; set; }
+        public string Address { get; set; }
+
+        public virtual DimClient Client { get; set; }
+        public virtual DimCity City { get; set; }
+    }
+
+    public class DimRoom
+    {
+        public int RoomKey { get; set; }
+        public int RoomId { get; set; }
+        public int ApartmentId { get; set; }
+        public string RoomType { get; set; }
+        public decimal FloorSquare { get; set; }
+        public decimal WallsSquare { get; set; }
+        public decimal CellingSquare { get; set; }
+        public int DoorsCount { get; set; }
+        public int WindowsCount { get; set; }
+
+        public virtual DimApartment Apartment { get; set; }
+    }
+
+    public class DimRepair
+    {
+        public int RepairKey { get; set; }
+        public int RepairId { get; set; }
+        public string RepairType { get; set; }
+        public string RepairName { get; set; }
+        public string RepairDescription { get; set; }
+        public decimal MinRepairHours { get; set; }
+        public decimal MaxRepairHours { get; set; }
+        public decimal RepairPrice { get; set; }
+    }
+
+    public class DimContract
+    {
+        public int ContractKey { get; set; }
+        public int ContractId { get; set; }
+        public int ContractStartDateId { get; set; }
+        public int? ContractEndDateId { get; set; }
+        public int DepartmentId { get; set; }
+        public decimal Prepayment { get; set; }
+        public decimal TotalPrice { get; set; }
+        public decimal WorkEstimatedPrice { get; set; }
+        public int ExaminationDateId { get; set; }
+    }
+
+    public class RepairServicesFact
+    {
+        public int RepairServicesKey { get; set; }
+        public int RepairServicesId { get; set; }
+        public int RepairStartDateId { get; set; }
+        public int? RepairEndDateId { get; set; }
+        public int RepairId { get; set; }
+        public int RoomId { get; set; }
+        public int ContractId { get; set; }
+        public int RepairCount { get; set; }
+        public decimal RepairTotalHours { get; set; }
+        public decimal RepairServiceTotalPrice { get; set; }
+        public decimal RelationToTotalContractHours { get; set; }
+        public decimal RelationToTotalContractPrice { get; set; }
+        public int? EmployeeCount { get; set; }
+    }
+
 }

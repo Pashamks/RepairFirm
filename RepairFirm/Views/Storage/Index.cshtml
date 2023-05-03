@@ -1,4 +1,4 @@
-﻿@model RepairFirm.Shared.Models.HomeData
+﻿@model List<RepairFirm.Shared.Models.RepairServicesFactModel>
 <!DOCTYPE html>
 <html>
 
@@ -27,7 +27,7 @@
   <!-- Custom styles for this template -->
   <link href="css/style.css" rel="stylesheet" />
   <!-- responsive style -->
-  <link href="css/responsive.css" rel="stylesheet" />
+   <link href="@Url.Content("~/css/responsive.css")" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
@@ -46,11 +46,11 @@
 
           <div class="collapse navbar-collapse text-center" style="max-width: 800px; margin: 0 auto;" >
             <ul class="navbar-nav  ">
-              <li class="nav-item active">
-                <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
-              </li>
               <li class="nav-item">
-                <a class="nav-link" href="Storage">Storage data</a>
+                <a class="nav-link" href="Home">Home </a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="Storage">Storage data <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="shop.html">OLTP data </a>
@@ -71,135 +71,57 @@
     </header>
     <!-- end header section -->
     <!-- slider section -->
-    <section class="slider_section ">
-      <div class="play_btn">
-        <a href="">
-          <img src="images/play.png" alt="">
-        </a>
-      </div>
-            
-        <div class="container">
-        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-
-          <div class="carousel-inner">
-            
-           @if (Model.IsConnected)
-            {
-                <div class="carousel-item active">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="detail-box">
-                    <h1>
-                      DATA BASE
-                      <span>
-                        CONNECTED
-                      </span>
-                    </h1>
-                  </div>
-                </div>
-           
-              </div>
-                </div>
-            }
-            else
-            {
-                 <div class="carousel-item ">
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="detail-box">
-                    <h1>
-                      DATA BASE
-                      <span>
-                        DISCONNECTED
-                      </span>
-                    </h1> 
-                  </div>
-                </div>             
-              </div>
-            </div>
-            }
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- end slider section -->
-  </div>
-
+  
   <!-- trending section -->
 
   <section class="trending_section layout_padding">
-    <div id="accordion">
+    <div id="accordion" >
       <div class="container">
+          <h1 style="text-align: center;">All repair services</h1>
         <div class="row">
-          <div class="col-md-6">
-            <div class="detail-box">
-              <div class="heading_container">
-                <h2>
-                 The most popular repairs   
-                </h2>
-              </div>
-              <div class="tab_container">
-                <div class="t-link-box" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                  aria-controls="collapseOne">
-                  <div class="number">
-                    <h5>
-                      01
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт вікон
-                    </h5>
-                  </div>
-                </div>
-                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                  aria-expanded="false" aria-controls="collapseTwo">
-                  <div class="number">
-                    <h5>
-                      02
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт дверей
-                    </h5>
-                  </div>
-                </div>
-                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseThree"
-                  aria-expanded="false" aria-controls="collapseThree">
-                  <div class="number">
-                    <h5>
-                      03
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт підлоги
-                    </h5>
-                  </div>
-                </div>
-                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseFour"
-                  aria-expanded="false" aria-controls="collapseFour">
-                  <div class="number">
-                    <h5>
-                      04
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт стелі
-                    </h5>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="col-md-12">
+          <div  style="text-align: center; overflow-y: auto; ">  
+            <table class="table table-bordered table-fixed" id="tblEmployee">  
+                 <thead>
+                    <tr>  
+                        <th width="100">Repair Start Date</th>  
+                        <th  width="100">Repair End Date</th>  
+                        <th width="200">Repair</th>  
+                        <th width="50">Room Id</th>  
+                        <th width="50">Contract Id</th>  
+
+                        <th width="70">Repair Count</th>  
+                        <th width="100">Repair Total Hours</th>  
+                        <th>Repair Service Total Price</th>  
+                        <th>Relation To Total Contract Hours</th>  
+                        <th>Relation To Total Contract Price</th>  
+                        <th>Employee Count</th>  
+                    </tr>  
+                </thead>
+                   
+            <tbody class="scrollit">
+                 
+                @foreach (var item in Model)
+                {
+                    <tr>
+                    <td  width="100">@Html.DisplayFor(modelItem => item.RepairStartDate)</td>
+                    <td  width="100">@Html.DisplayFor(modelItem => item.RepairEndDate)</td>
+                    <td width="200">@Html.DisplayFor(modelItem => item.RepairName)</td>
+                    <td width="65"  >@Html.DisplayFor(modelItem => item.RoomId)</td>
+                    <td width="86">@Html.DisplayFor(modelItem => item.ContractId)</td>
+                    <td  width="70">@Html.DisplayFor(modelItem => item.RepairCount)</td>
+                    <td width="100">@Html.DisplayFor(modelItem => item.RepairTotalHours)</td>
+                    <td width="95">@Html.DisplayFor(modelItem => item.RepairTotalPrcie)</td>
+                    <td width="112">@Html.DisplayFor(modelItem => item.RelationToTotalContractHours)</td>
+                    <td width="110">@Html.DisplayFor(modelItem => item.RelationToTotalContractPrice)</td>
+                    <td  width="80">@Html.DisplayFor(modelItem => item.EmployeeCount)</td>
+                    </tr>
+                }
+               </tbody> 
+              
+            </table>  
+         </div> 
           </div>
-          
           
 
           </div>
@@ -294,54 +216,6 @@
     </div>
   </section>
 
-  <!-- end brand section -->
-  <!-- contact section -->
-
-  <section class="contact_section layout_padding">
-    <div class="container ">
-      <div class="heading_container">
-        <h2 class="">
-          Contact Us
-        </h2>
-      </div>
-
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <form action="">
-            <div>
-              <input type="text" placeholder="Name" />
-            </div>
-            <div>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div>
-              <input type="text" placeholder="Phone" />
-            </div>
-            <div>
-              <input type="text" class="message-box" placeholder="Message" />
-            </div>
-            <div class="d-flex ">
-              <button>
-                SEND
-              </button>
-            </div>
-          </form>
-        </div>
-        <div class="col-md-6">
-          <div class="map_container">
-            <div class="map-responsive">
-              <iframe
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Lviv+Stepan+Bandera"
-                width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%"
-                allowfullscreen></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- end contact section -->
 

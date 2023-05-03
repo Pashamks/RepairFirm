@@ -1,5 +1,7 @@
 using EfCoreRepository;
+using Microsoft.Data.SqlClient;
 using RepairFirm.Shared.Models;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 builder.Services.AddControllers();
+
+var connection = builder.Configuration.GetSection("ConnectionStrings");
+
+builder.Services.AddSingleton<IDbConnection>(new SqlConnection(connection["RepairFirmaStorage"]));
 builder.Services.AddSingleton(new RepairDbContext());
+builder.Services.AddSingleton<IDbRepository, DbRepository>();
+
 
 var loginData = builder.Configuration.GetSection("LoginAccount");
 builder.Services.AddSingleton(loginData.Get<LoginData>());

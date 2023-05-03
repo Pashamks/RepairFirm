@@ -8,6 +8,25 @@
   }
 }
 
+.table-fixed tbody td,
+.table-fixed thead tr > th {
+    font-size: 14px;
+}
+.table-fixed tbody {
+    display: block;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.table-fixed tr {
+    display: block;
+}
+
+
+.scrollit {
+    overflow-y: scroll;
+    height: 100px;
+}
 @media (max-width: 992px) {
   #navbarSupportedContent {
     opacity: 1;
