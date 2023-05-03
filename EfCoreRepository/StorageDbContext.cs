@@ -74,7 +74,35 @@ namespace EfCoreRepository
               END 
             GO
 
+            CREATE PROCEDURE get_department_and_price
+            AS 
+            BEGIN 
 
+            SELECT dc.totalPrice, t.cityName FROM [RepairFirmaStorage].[dbo].DimContract as dc
+             INNER JOIN [RepairFirmaStorage].[dbo].DimDepartment as dd on dd.departmentId = dc.departmentId
+              INNER JOIN [RepairFirmaStorage].[dbo].DimCity as dci on dci.cityKey = dd.cityId
+              INNER JOIN 
+            (SELECT TOP 3
+                   dci.cityName
+	               FROM [RepairFirmaStorage].[dbo].DimContract as dc
+              INNER JOIN [RepairFirmaStorage].[dbo].DimDepartment as dd on dd.departmentId = dc.departmentId
+              INNER JOIN [RepairFirmaStorage].[dbo].DimCity as dci on dci.cityKey = dd.cityId
+              GROUP BY dci.cityName
+              ORDER BY COUNT(dc.contractId) DESC) as t
+              ON t.cityName = dci.cityName
+              END 
+            GO
+
+            CREATE PROCEDURE get_employee_count_and_repair
+            AS 
+            BEGIN 
+
+            SELECT dr.repairType, SUM(rsf.employeeCount) as empoyeeCount FROM [RepairFirmaStorage].[dbo].RepairServicesFact as rsf
+            INNER JOIN [RepairFirmaStorage].[dbo].DimRepair as dr  on rsf.repairId = dr.repairId
+            GROUP BY dr.repairType
+	
+            END 
+            GO
             ";
 
         }

@@ -27,11 +27,11 @@ namespace RepairFirm.Controllers
 				Label = x.CityName,
 				Y = x.ServicesCount
 			}).ToList();
-
-
-
 			ViewData["repairChart"] = JsonConvert.SerializeObject(list);
 			ViewData["departmetnCountChart"] = JsonConvert.SerializeObject(list2);
+
+			#region 3 Chart
+
 			List<DataPoint> dataPoints1 = new List<DataPoint>();
 			List<DataPoint> dataPoints2 = new List<DataPoint>();
 			List<DataPoint> dataPoints3 = new List<DataPoint>();
@@ -61,6 +61,15 @@ namespace RepairFirm.Controllers
 			ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
 			ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoints2);
 			ViewBag.DataPoints3 = JsonConvert.SerializeObject(dataPoints3);
+			#endregion
+
+			var chart4 = _dbRepository.GetEmployeeForRepairType().Select(x => new DataPoint
+			{
+				Label = x.RepairType,
+				Y = x.EmpoyeeCount
+			}).ToList(); ;
+			ViewData["chart4"] = JsonConvert.SerializeObject(chart4);
+
 			return View();
 		}
 	}

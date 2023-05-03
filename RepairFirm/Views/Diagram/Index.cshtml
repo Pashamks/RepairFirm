@@ -1,6 +1,7 @@
 ﻿@{
     var repairChart = ViewData["repairChart"];
     var departmetnCountChart = ViewData["departmetnCountChart"];
+ 
 }
 <!DOCTYPE HTML>
 <html>
@@ -33,7 +34,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 chart.render();
  
 var chart2 = new CanvasJS.Chart("chartContainerDepartment", {
-	animationEnabled: true,
+		animationEnabled: true,
 	theme: "light1",
 	title: {
 		text: "Кількість укладених контрактів по містах"
@@ -86,6 +87,31 @@ var chart3 = new CanvasJS.Chart("chartContainertest", {
 });
 chart3.render();
  
+
+
+var chart4 = new CanvasJS.Chart("chartContainerEmployee", {
+	animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Сумарна кількість робітників для послуг"
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "splineArea",
+		indexLabel: "{y}",
+		dataPoints:  @Html.Raw(ViewData["chart4"])
+	}]
+});
+chart4.render();
 }
 </script>
   <!-- slider stylesheet -->
@@ -168,49 +194,7 @@ chart3.render();
   <!-- contact section -->
 
   <section class="contact_section layout_padding">
-    <div class="container ">
-      <div class="heading_container">
-        <h2 class="">
-          Contact Us
-        </h2>
-      </div>
-
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-6">
-          <form action="">
-            <div>
-              <input type="text" placeholder="Name" />
-            </div>
-            <div>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div>
-              <input type="text" placeholder="Phone" />
-            </div>
-            <div>
-              <input type="text" class="message-box" placeholder="Message" />
-            </div>
-            <div class="d-flex ">
-              <button>
-                SEND
-              </button>
-            </div>
-          </form>
-        </div>
-        <div class="col-md-6">
-          <div class="map_container">
-            <div class="map-responsive">
-              <iframe
-                src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0s1a7phLN0iaD6-UE7m4qP-z21pH0eSc&q=Lviv+Stepan+Bandera"
-                width="600" height="300" frameborder="0" style="border:0; width: 100%; height:100%"
-                allowfullscreen></iframe>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <div id="chartContainerEmployee" style="height: 370px; width: 100%;"></div>
   </section>
 
   <!-- end contact section -->
