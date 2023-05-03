@@ -11,4 +11,14 @@
     <ProjectReference Include="..\RepairFirm.Shared\RepairFirm.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Meta\" />
+    <Folder Include="Views\Report\" />
+    <Folder Include="Views\OTLP\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
 </Project>

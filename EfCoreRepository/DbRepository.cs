@@ -12,6 +12,11 @@ namespace EfCoreRepository
             _connection = connection;
         }
 
+        public List<RepairCountChartData> GetRepairCountChart()
+        {
+            return _connection.Query<RepairCountChartData>("get_repair_name_and_count", commandType: CommandType.StoredProcedure).ToList();
+        }
+
         public List<RepairServicesFactModel> GetRepairServicesFacts()
         {
             return _connection.Query<RepairServicesFactModel>("get_fact", commandType: CommandType.StoredProcedure).ToList();
