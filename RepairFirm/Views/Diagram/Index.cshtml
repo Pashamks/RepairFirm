@@ -1,5 +1,6 @@
 ﻿@{
-	var repairChart = ViewData["chart"];
+	var repairChart = ViewData["repairChart"];
+	var departmetnCountChart = ViewData["departmetnCountChart"];
 }
 <!DOCTYPE HTML>
 <html>
@@ -31,11 +32,35 @@ var chart = new CanvasJS.Chart("chartContainer", {
 });
 chart.render();
  
+var chart2 = new CanvasJS.Chart("chartContainerDepartment", {
+	animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість укладених контрактів по містах"
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "line",
+		indexLabel: "{y}",
+		dataPoints:  @Html.Raw(@departmetnCountChart)
+	}]
+});
+chart2.render();
 }
 </script>
 </head>
 <body>
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<div id="chartContainerDepartment" style="height: 370px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 </html>         

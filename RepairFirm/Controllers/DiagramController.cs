@@ -22,9 +22,16 @@ namespace RepairFirm.Controllers
 				Y = x.RepairCount
 			}).ToList();
 
+			var list2 = _dbRepository.GetDepartmentServices().Select(x => new DataPoint
+			{
+				Label = x.CityName,
+				Y = x.ServicesCount
+			}).ToList();
 
 
-			ViewData["chart"] = JsonConvert.SerializeObject(list);
+
+			ViewData["repairChart"] = JsonConvert.SerializeObject(list);
+			ViewData["departmetnCountChart"] = JsonConvert.SerializeObject(list2);
 
 			return View();
 		}
