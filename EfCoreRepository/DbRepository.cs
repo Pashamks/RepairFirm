@@ -36,5 +36,22 @@ namespace EfCoreRepository
         {
             return _connection.Query<RepairServicesFactModel>("get_fact", commandType: CommandType.StoredProcedure).ToList();
         }
+
+        public void PervLoading()
+        {
+            _connection.Query("delete_from_storage", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("delete_from_staging", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("load_data_into_staging_db ", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("tranform_and_upload_data", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("delete_from_staging", commandType: CommandType.StoredProcedure).ToList();
+        }
+
+        public void IncrementLoading()
+        {
+            _connection.Query("delete_from_staging", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("load_incremental_data_into_staging_db", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("upload_incremental", commandType: CommandType.StoredProcedure).ToList();
+            _connection.Query("delete_from_staging", commandType: CommandType.StoredProcedure).ToList();
+        }
     }
 }

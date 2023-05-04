@@ -336,8 +336,8 @@ a:focus {
       }
 
       .btn-1 {
-        @include hero_btn($primary1, $white, 6px, 0, 20px);
         margin-right: 5px;
+        background-color: green;
       }
 
       .btn-2 {
@@ -956,11 +956,12 @@ a:focus {
   opacity: 1;
 }
 
+
 .custom_menu-btn button {
-  margin-top: 12px;
-  outline: none;
-  border: none;
-  background-color: transparent;
+    margin-top: 12px;
+    outline: none;
+    border: none;
+    background-color: transparent;
 }
 
 .custom_menu-btn button span {

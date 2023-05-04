@@ -1,117 +1,10 @@
-﻿@{
-    var repairChart = ViewData["repairChart"];
-    var departmetnCountChart = ViewData["departmetnCountChart"];
- 
-}
+﻿
 <!DOCTYPE HTML>
 <html>
 <head>
 <script>
-window.onload = function () {
+
  
-var chart = new CanvasJS.Chart("chartContainer", {
-	animationEnabled: true,
-	theme: "light1",
-	title: {
-		text: "Популярність типів ремонту"
-	},
-	axisY: {
-		scaleBreaks: {
-			autoCalculate: true,
-			type: "wavy",
-			lineColor: "black"
-		},
-		gridThickness: 0,
-		suffix: "",
-		labelWrap: true
-	},
-	data: [{
-		type: "column",
-		indexLabel: "{y}",
-		dataPoints:  @Html.Raw(@repairChart)
-	}]
-});
-    chart.render();
-
-var chart2 = new CanvasJS.Chart("chartContainerDepartment", {
-		animationEnabled: true,
-	theme: "light1",
-	title: {
-		text: "Кількість укладених контрактів по містах"
-	},
-	axisY: {
-		scaleBreaks: {
-			autoCalculate: true,
-			type: "wavy",
-			lineColor: "black"
-		},
-		gridThickness: 0,
-		suffix: "",
-		labelWrap: true
-	},
-	data: [{
-		type: "line",
-		indexLabel: "{y}",
-		dataPoints:  @Html.Raw(@departmetnCountChart)
-	}]
-});
-chart2.render();
-
-var chart3 = new CanvasJS.Chart("chartContainertest", {
-	animationEnabled: true,
-	title: {
-		text: "Вартість контрактів у найпопулярніших відділенях"
-	},
-	toolTip: {
-		shared: true
-	},
-    axisX: {
-        suffix: " контракт"
-    },
-	data: [{
-		type: "line",
-		name: '@Html.Raw(ViewData["city1"])',
-		showInLegend: true,
-		dataPoints: @Html.Raw(ViewBag.DataPoints1)
-	}, {
-		type: "line",
-		name: '@Html.Raw(ViewData["city2"])',
-		showInLegend: true,
-		dataPoints: @Html.Raw(ViewBag.DataPoints2)
-	}, {
-		type: "line",
-		name: '@Html.Raw(ViewData["city3"])',
-		showInLegend: true,
-		dataPoints: @Html.Raw(ViewBag.DataPoints3)
-	}]
-});
-chart3.render();
- 
-
-
-var chart4 = new CanvasJS.Chart("chartContainerEmployee", {
-	animationEnabled: true,
-	theme: "light1",
-	title: {
-		text: "Сумарна кількість робітників для послуг"
-	},
-	axisY: {
-		scaleBreaks: {
-			autoCalculate: true,
-			type: "wavy",
-			lineColor: "black"
-		},
-		gridThickness: 0,
-		suffix: "",
-		labelWrap: true
-	},
-	data: [{
-		type: "splineArea",
-		indexLabel: "{y}",
-		dataPoints:  @Html.Raw(ViewData["chart4"])
-	}]
-});
-chart4.render();
 }
 </script>
   <!-- slider stylesheet -->
@@ -156,10 +49,10 @@ chart4.render();
               <li class="nav-item">
                 <a class="nav-link" href="Meta">Metadata </a>
               </li>
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="Diagram">Diagram </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link" href="Report"> Report </a>
               </li>
             </ul>
@@ -167,37 +60,15 @@ chart4.render();
         </nav>
       </div>
     </header>
-    <!-- end header section -->
-    <!-- slider section -->
-    <section class="slider_section ">
-      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    </section>
-    <!-- end slider section -->
+    <form method="post" action="Report/GeneratePdf">
+            <h1>Generate Report</h1>
+ 
+          <div class="form-field">
+            <button class="btn" type="submit">Report!</button>
+          </div>
+        </form>
   </div>
-
-  <!-- trending section -->
-
-  <section class="trending_section layout_padding">
-    <div id="chartContainerDepartment" style="height: 370px; width: 100%;"></div>
-  </section>
-
-  <!-- end trending section -->
-
-
-  <!-- brand section -->
-
-  <section class="brand_section">
-  <div id="chartContainertest" style="height: 370px; width: 100%;"></div>
-  </section>
-
-  <!-- end brand section -->
-  <!-- contact section -->
-
-  <section class="contact_section layout_padding">
-      <div id="chartContainerEmployee" style="height: 370px; width: 100%;"></div>
-  </section>
-
-  <!-- end contact section -->
+        
 
 
   <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>

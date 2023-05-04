@@ -6,10 +6,12 @@ namespace EfCoreRepository
 {
     public interface IDbRepository
     {
-        public List<RepairServicesFactModel> GetRepairServicesFacts();
-        public List<RepairCountChartData> GetRepairCountChart();
-        public List<DepartmentContractData> GetDepartmentServices();
-        public List<DepartmentPaymentData> GetDepartmentPayments();
-        public List<EmployeeForRepairData> GetEmployeeForRepairType();
+        List<RepairServicesFactModel> GetRepairServicesFacts();
+        List<RepairCountChartData> GetRepairCountChart();
+        List<DepartmentContractData> GetDepartmentServices();
+        List<DepartmentPaymentData> GetDepartmentPayments();
+        List<EmployeeForRepairData> GetEmployeeForRepairType();
+        void PervLoading();
+        void IncrementLoading();
     }
 }
