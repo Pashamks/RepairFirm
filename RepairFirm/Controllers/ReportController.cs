@@ -27,10 +27,6 @@ namespace RepairFirm.Controllers
                 return View();
             }
 
-            
-            var list2 = _dbRepository.GetDepartmentServices();
-
-
             #region 3 Chart
 
             List<DataPoint> dataPoints1 = new List<DataPoint>();
@@ -74,6 +70,8 @@ namespace RepairFirm.Controllers
 
             AddPopularRepairDiagram(document);
             AddContractCountDiagram(document);
+            //
+            AddEmployeeCountDiagram(document);
             var table = new PdfPTable(2)
             {
                 WidthPercentage = 100,
@@ -97,6 +95,46 @@ namespace RepairFirm.Controllers
 
             return View();
         }
+
+        private Bitmap GenerateImgForEmployeeCount()
+        {
+            var list = _dbRepository.GetEmployeeForRepairType();
+            list.ForEach(x => x.RepairType = x.RepairType.Replace(' ', '\n'));
+
+            var plt = new ScottPlot.Plot(700, 400);
+
+            double[] positions = DataGen.Consecutive(list.Count);
+            var splt = plt.AddScatter(positions, list.Select(x => Convert.ToDouble(x.EmpoyeeCount)).ToArray());
+            plt.AddFill(positions, list.Select(x => Convert.ToDouble(x.EmpoyeeCount)).ToArray());
+            plt.XAxis.ManualTickPositions(list.Select((x, i) => (double)(i)).ToArray(), list.Select(x => x.RepairType).ToArray());
+            plt.YAxis.ManualTickPositions(list.Select((x, i) => (double)(x.EmpoyeeCount)).ToArray(),
+                list.Select(x => x.EmpoyeeCount.ToString()).ToArray());
+            
+
+            System.Drawing.Bitmap bmp = plt.Render();
+            return bmp;
+        }
+
+        private void AddEmployeeCountDiagram(Document document)
+        {
+            Bitmap bmp = GenerateImgForEmployeeCount();
+            document.NewPage();
+            document.Add(new Paragraph(new Phrase { new Chunk(("Employee count for repair types").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            using (var stream2 = new MemoryStream())
+            {
+                bmp.Save(stream2, System.Drawing.Imaging.ImageFormat.Png);
+                stream2.Position = 0;
+                var png = iTextSharp.text.Image.GetInstance(stream2);
+                png.RotationDegrees = 270;
+                png.Rotate();
+                png.Alignment = Element.ALIGN_CENTER;
+                document.Add(png);
+            }
+        }
+
         private Bitmap GenerateImgForContractCounts()
         {
             var list = _dbRepository.GetDepartmentServices();
