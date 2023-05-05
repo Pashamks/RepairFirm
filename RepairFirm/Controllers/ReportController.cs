@@ -55,8 +55,6 @@ namespace RepairFirm.Controllers
             dataPoints3 = points[2];
 
             #endregion
-
-            var chart4 = _dbRepository.GetEmployeeForRepairType();
             
 
             var stream = new FileStream("new.pdf", FileMode.CreateNew);
@@ -68,10 +66,10 @@ namespace RepairFirm.Controllers
             document.AddAuthor("Pavlo Somko");
             document.AddTitle("Repair firm analysis report");
 
-            AddPopularRepairDiagram(document);
-            AddContractCountDiagram(document);
-            //
-            AddEmployeeCountDiagram(document);
+            AddDiagram(document, "Popularity of repair types", GenerateImgForRepairsPopular());
+            AddDiagram(document, "Amount of contracts in each city", GenerateImgForContractCounts());
+            AddDiagram(document, "Countract price in the most popular departments", GenerateImgForContractPrice());
+            AddDiagram(document, "Employee count for repair types", GenerateImgForEmployeeCount());
             var table = new PdfPTable(2)
             {
                 WidthPercentage = 100,
@@ -95,6 +93,68 @@ namespace RepairFirm.Controllers
 
             return View();
         }
+        private Bitmap GenerateImgForContractPrice()
+        {
+            List<DataPoint> dataPoints1 = new List<DataPoint>();
+            List<DataPoint> dataPoints2 = new List<DataPoint>();
+            List<DataPoint> dataPoints3 = new List<DataPoint>();
+
+            List<List<DataPoint>> points = new List<List<DataPoint>>();
+            var temp = _dbRepository.GetDepartmentPayments().GroupBy(x => x.CityName);
+            int i = 0, j = 1;
+            List<string> cities = new List<string>();
+            foreach (var group in temp)
+            {
+                points.Add(new List<DataPoint>());
+
+                foreach (var item in group)
+                {
+                    points[i].Add(new DataPoint { Label = j.ToString(), Y = item.TotalPrice });
+                    j++;
+                }
+                cities.Add(group.Key);
+                j = 1;
+                i++;
+            }
+
+            dataPoints1 = points[0];
+            dataPoints2 = points[1];
+            dataPoints3 = points[2];
+
+
+
+            var plt = new ScottPlot.Plot(700, 400);
+
+            double[] positions = DataGen.Consecutive(dataPoints2.Count);
+            plt.AddScatter(positions, dataPoints2.Select(x => (double)x.Y).ToArray(), label: cities[1]);
+
+            plt.XAxis.ManualTickPositions(dataPoints2.Select((x, i) => (double)(i)).ToArray(), dataPoints2.Select(x => x.Label + " контракт").ToArray());
+            plt.YAxis.ManualTickPositions(dataPoints2.Select((x, i) => (double)(x.Y)).ToArray(),
+                dataPoints2.Select(x => x.Y.ToString()).ToArray());
+
+            positions = DataGen.Consecutive(dataPoints3.Count);
+            plt.AddScatter(positions, dataPoints3.Select(x => (double)x.Y).ToArray(), label: cities[2]);
+
+            plt.XAxis.ManualTickPositions(dataPoints3.Select((x, i) => (double)(i)).ToArray(), dataPoints3.Select(x => x.Label + " контракт").ToArray());
+            plt.YAxis.ManualTickPositions(dataPoints3.Select((x, i) => (double)(x.Y)).ToArray(),
+                dataPoints3.Select(x => x.Y.ToString()).ToArray());
+
+            positions = DataGen.Consecutive(dataPoints1.Count);
+            plt.AddScatter(positions, dataPoints1.Select(x => (double)x.Y).ToArray(), label: cities[0]);
+
+            plt.XAxis.ManualTickPositions(dataPoints1.Select((x, i) => (double)(i)).ToArray(), dataPoints1.Select(x => x.Label + " контракт").ToArray());
+            plt.YAxis.ManualTickPositions(dataPoints1.Select((x, i) => (double)(x.Y)).ToArray(),
+                dataPoints1.Select(x => x.Y.ToString()).ToArray());
+
+            var legend = plt.Legend(enable: true);
+            legend.FontSize = 8;
+            legend.Location = Alignment.UpperRight;
+
+
+
+            System.Drawing.Bitmap bmp = plt.Render();
+            return bmp;
+        }
 
         private Bitmap GenerateImgForEmployeeCount()
         {
@@ -113,26 +173,6 @@ namespace RepairFirm.Controllers
 
             System.Drawing.Bitmap bmp = plt.Render();
             return bmp;
-        }
-
-        private void AddEmployeeCountDiagram(Document document)
-        {
-            Bitmap bmp = GenerateImgForEmployeeCount();
-            document.NewPage();
-            document.Add(new Paragraph(new Phrase { new Chunk(("Employee count for repair types").ToUpper()) })
-            {
-                Alignment = Element.ALIGN_CENTER,
-            });
-            using (var stream2 = new MemoryStream())
-            {
-                bmp.Save(stream2, System.Drawing.Imaging.ImageFormat.Png);
-                stream2.Position = 0;
-                var png = iTextSharp.text.Image.GetInstance(stream2);
-                png.RotationDegrees = 270;
-                png.Rotate();
-                png.Alignment = Element.ALIGN_CENTER;
-                document.Add(png);
-            }
         }
 
         private Bitmap GenerateImgForContractCounts()
@@ -157,25 +197,7 @@ namespace RepairFirm.Controllers
             System.Drawing.Bitmap bmp = plt.Render();
             return bmp;
         }
-        private void AddContractCountDiagram(Document document)
-        {
-            Bitmap bmp = GenerateImgForContractCounts();
-            document.NewPage();
-            document.Add(new Paragraph(new Phrase { new Chunk(("Amount of contracts in each city").ToUpper()) })
-            {
-                Alignment = Element.ALIGN_CENTER,
-            });
-            using (var stream2 = new MemoryStream())
-            {
-                bmp.Save(stream2, System.Drawing.Imaging.ImageFormat.Png);
-                stream2.Position = 0;
-                var png = iTextSharp.text.Image.GetInstance(stream2);
-                png.RotationDegrees = 270;
-                png.Rotate();
-                png.Alignment = Element.ALIGN_CENTER;
-                document.Add(png);
-            }
-        }
+
         private Bitmap GenerateImgForRepairsPopular()
         {
             var list = _dbRepository.GetRepairCountChart();
@@ -195,11 +217,10 @@ namespace RepairFirm.Controllers
             return bmp;
         }
 
-        private void AddPopularRepairDiagram(Document document)
+        private void AddDiagram(Document document, string name, Bitmap bmp)
         {
-            Bitmap bmp = GenerateImgForRepairsPopular();
             document.NewPage();
-            document.Add(new Paragraph(new Phrase { new Chunk(("Popularity of repair types").ToUpper()) })
+            document.Add(new Paragraph(new Phrase { new Chunk((name).ToUpper()) })
             {
                 Alignment = Element.ALIGN_CENTER,
             });
