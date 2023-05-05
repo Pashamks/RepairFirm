@@ -61,7 +61,7 @@ namespace RepairFirm.Controllers
             #endregion
 
             var chart4 = _dbRepository.GetEmployeeForRepairType();
-            Bitmap bmp = GenerateImgForRepairsPopular();
+            
 
             var stream = new FileStream("new.pdf", FileMode.CreateNew);
 
@@ -72,8 +72,8 @@ namespace RepairFirm.Controllers
             document.AddAuthor("Pavlo Somko");
             document.AddTitle("Repair firm analysis report");
 
-            AddPopularRepairDiagram(bmp, document);
-
+            AddPopularRepairDiagram(document);
+            AddContractCountDiagram(document);
             var table = new PdfPTable(2)
             {
                 WidthPercentage = 100,
@@ -97,7 +97,47 @@ namespace RepairFirm.Controllers
 
             return View();
         }
+        private Bitmap GenerateImgForContractCounts()
+        {
+            var list = _dbRepository.GetDepartmentServices();
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (i % 2 == 1)
+                    list[i].CityName = "\n" + list[i].CityName;
+            }
 
+            var plt = new ScottPlot.Plot(700, 400);
+
+            double[] positions = DataGen.Consecutive(list.Count);
+            plt.AddScatter(positions, list.Select(x => Convert.ToDouble(x.ServicesCount)).ToArray());
+
+            plt.XAxis.ManualTickPositions(list.Select((x, i) => (double)(i)).ToArray(), list.Select(x => x.CityName).ToArray());
+            plt.YAxis.ManualTickPositions(list.Select((x, i) => (double)(x.ServicesCount)).ToArray(),
+                list.Select(x => x.ServicesCount.ToString()).ToArray());
+
+
+            System.Drawing.Bitmap bmp = plt.Render();
+            return bmp;
+        }
+        private void AddContractCountDiagram(Document document)
+        {
+            Bitmap bmp = GenerateImgForContractCounts();
+            document.NewPage();
+            document.Add(new Paragraph(new Phrase { new Chunk(("Amount of contracts in each city").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            using (var stream2 = new MemoryStream())
+            {
+                bmp.Save(stream2, System.Drawing.Imaging.ImageFormat.Png);
+                stream2.Position = 0;
+                var png = iTextSharp.text.Image.GetInstance(stream2);
+                png.RotationDegrees = 270;
+                png.Rotate();
+                png.Alignment = Element.ALIGN_CENTER;
+                document.Add(png);
+            }
+        }
         private Bitmap GenerateImgForRepairsPopular()
         {
             var list = _dbRepository.GetRepairCountChart();
@@ -117,10 +157,11 @@ namespace RepairFirm.Controllers
             return bmp;
         }
 
-        private static void AddPopularRepairDiagram(Bitmap bmp, Document document)
+        private void AddPopularRepairDiagram(Document document)
         {
+            Bitmap bmp = GenerateImgForRepairsPopular();
             document.NewPage();
-            document.Add(new Paragraph(new Phrase { new Chunk(("The most popular repairs diagram").ToUpper()) })
+            document.Add(new Paragraph(new Phrase { new Chunk(("Popularity of repair types").ToUpper()) })
             {
                 Alignment = Element.ALIGN_CENTER,
             });
