@@ -132,74 +132,58 @@
     <div id="accordion">
       <div class="container">
         <div class="row">
-          <div class="col-md-6">
-            <div class="detail-box">
-              <div class="heading_container">
-                <h2>
-                 The most popular repairs   
-                </h2>
-              </div>
-              <div class="tab_container">
-                <div class="t-link-box" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true"
-                  aria-controls="collapseOne">
-                  <div class="number">
-                    <h5>
-                      01
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт вікон
-                    </h5>
-                  </div>
+            <div>
+                <div class="col">
+                    <h4 style="width: 400px">Популярність типів ремонту (у скількох контрактах присутній)</h4>
+                    <table class="table table-bordered table-fixed" id="tblRepairs">  
+                 <thead>
+                    <tr>  
+                        <th width="200">Repair Name</th>  
+                        <th  width="200">Contracts with repair count</th>  
+                    </tr>  
+                </thead>
+                   
+            <tbody class="scrollit">
+                @foreach (var item in @Model.RepairCountChartDatas)
+                                {
+                                    <tr>
+                                        <td width="200">@item.RepairType</td>
+                                        <td width="200">@item.RepairCount</td>
+                                    </tr>
+                                }
+               </tbody> 
+              
+            </table>
                 </div>
-                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseTwo"
-                  aria-expanded="false" aria-controls="collapseTwo">
-                  <div class="number">
-                    <h5>
-                      02
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт дверей
-                    </h5>
-                  </div>
-                </div>
-                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseThree"
-                  aria-expanded="false" aria-controls="collapseThree">
-                  <div class="number">
-                    <h5>
-                      03
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт підлоги
-                    </h5>
-                  </div>
-                </div>
-                <div class="t-link-box collapsed" data-toggle="collapse" data-target="#collapseFour"
-                  aria-expanded="false" aria-controls="collapseFour">
-                  <div class="number">
-                    <h5>
-                      04
-                    </h5>
-                  </div>
-                  <hr>
-                  <div class="t-name">
-                    <h5>
-                      Ремонт стелі
-                    </h5>
-                  </div>
-                </div>
-              </div>
+               
+               
             </div>
-          </div>
-          
+           <div>
+               <div class="col">
+                    <h4 style="width: 400px">Кількість укладених контрактів по містах</h4>
+                <table class="table table-bordered table-fixed" id="tblRepairs">  
+                 <thead>
+                    <tr>  
+                        <th width="200">City Name</th>  
+                        <th  width="200">Contract count in city</th>  
+                    </tr>  
+                </thead>
+                   
+            <tbody class="scrollit">
+                @foreach (var item in @Model.DepartmentContractDatas)
+                                {
+                                    <tr>
+                                        <td width="200">@item.CityName</td>
+                                        <td width="200">@item.ServicesCount</td>
+                                    </tr>
+                                }
+               </tbody> 
+              
+            </table> 
+            </div>
+             </div>
+               
+            </div>
           </div>
         </div>
       </div>
@@ -288,7 +272,7 @@
       </div>
       <div class="heading_container">
         <h2>
-          Storage Fiiling
+          Storage Actions
         </h2>
       </div>
       <a href="Home/Perv" class="brand-btn">
@@ -296,6 +280,9 @@
       </a>
        <a href="Home/Increment" class="brand-btn">
         Виконати інкрементальну заливку
+      </a>
+       <a href="Home/Clear" class="brand-btn">
+       Очистити сховище
       </a>
     </div>
   </section>

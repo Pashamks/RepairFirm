@@ -118,5 +118,10 @@ namespace EfCoreRepository
                 metadata.StorageDatabaseName = ctx.Database.GetDbConnection().Database;
             return metadata;
         }
+
+        public void ClearStorage()
+        {
+            _connection.Query("delete_from_storage", commandType: CommandType.StoredProcedure).ToList();
+        }
     }
 }

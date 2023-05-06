@@ -1,4 +1,7 @@
 ﻿@model RepairFirm.Shared.Models.MetadataModel
+@{
+    var fileName = @Model.OLTPDatabaseName + ".mdf";
+}
 <!DOCTYPE html>
 <html>
 
@@ -123,6 +126,7 @@
         </h2>
       </div>
       <h3>OLTP Database Name : @Model.OLTPDatabaseName</h3>
+      <h3>File name : @fileName </h3>
       <div class="brand_container layout_padding2">
                 @foreach(var item in @Model.OLTPTablesAndCount)
                 {
