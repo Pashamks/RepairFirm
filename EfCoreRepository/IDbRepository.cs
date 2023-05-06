@@ -14,5 +14,6 @@ namespace EfCoreRepository
         void PervLoading();
         void IncrementLoading();
         List<RepairsByCitiesData> GetRepairsByCity();
+        MetadataModel GetMetaData();
     }
 }

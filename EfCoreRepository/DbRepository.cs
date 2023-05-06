@@ -58,5 +58,60 @@ namespace EfCoreRepository
         {
             return _connection.Query<RepairsByCitiesData>("get_repairs_by_cities", commandType: CommandType.StoredProcedure).ToList();
         }
+
+        public MetadataModel GetMetaData()
+        {
+            var metadata = new MetadataModel();
+            using(var ctx = new MetaDbContext())
+            {
+                var lastload = ctx.LoadHistory.OrderBy(x => x.LoadHistoryId).First();
+                metadata.AvarageQueryTime = lastload.AvarageQueryTime;
+                metadata.LastLoadDate = lastload.LastLoadDate;
+                metadata.LoadDimentionsCount = lastload.LoadDimentionsCount;
+                metadata.LoadAttributesCount = lastload.LoadAttributesCount;
+                metadata.LoadValuesCount = lastload.LoadValusCount;
+            }
+            using(var ctx = new RepairDbContext())
+            {
+                metadata.OLTPTablesAndCount = new Dictionary<string, int>();
+                var allTables = ctx.Model.GetEntityTypes();
+
+                foreach (var table in allTables)
+                {
+                    Dictionary<string, int> OLTPTablesAndCount = new Dictionary<string, int>();
+
+                    OLTPTablesAndCount.Add(nameof(ctx.Repair), ctx.Repair.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.RepairType), ctx.RepairType.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.RepairTypes), ctx.RepairTypes.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.ExaminationPrice), ctx.ExaminationPrice.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.ExaminationStatus), ctx.ExaminationStatus.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.AreaExamination), ctx.AreaExamination.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Employee), ctx.Employee.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Position), ctx.Position.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Room), ctx.Room.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Client), ctx.Client.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Apartment), ctx.Apartment.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.RoomType), ctx.RoomType.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.RoomForExamination), ctx.RoomForExamination.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Material), ctx.Material.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.RoomMaterial), ctx.RoomMaterial.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.HistoryStatus), ctx.HistoryStatus.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.RepairServices), ctx.RepairServices.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.EmployeeForRepair), ctx.EmployeeForRepair.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Contract), ctx.Contract.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Department), ctx.Department.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.MaterialMeasure), ctx.MaterialMeasure.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.MaterialType), ctx.MaterialType.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.MaterialColor), ctx.MaterialColor.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.MaterialProducer), ctx.MaterialProducer.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.Country), ctx.Country.Count());
+                    OLTPTablesAndCount.Add(nameof(ctx.City), ctx.City.Count());
+
+                    metadata.OLTPTablesAndCount = OLTPTablesAndCount;
+                }
+                metadata.TotalOLTPRows = metadata.OLTPTablesAndCount.Sum(x => x.Value);
+            }
+            return metadata;
+        }
     }
 }

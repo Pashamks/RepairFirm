@@ -19,7 +19,7 @@ namespace EfCoreRepository
         public DbSet<RoomType> RoomType { get; set; }
         public DbSet<RoomForExamination> RoomForExamination { get; set; }
         public DbSet<Material> Material { get; set; }
-        public DbSet<RoomMaterial> RoomMaterials { get; set; }
+        public DbSet<RoomMaterial> RoomMaterial { get; set; }
         public DbSet<HistoryStatus> HistoryStatus { get; set; }
         public DbSet<RepairServices> RepairServices { get; set; }
         public DbSet<EmployeeForRepair> EmployeeForRepair { get; set; }

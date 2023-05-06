@@ -1,6 +1,18 @@
 ﻿
+using System.ComponentModel.DataAnnotations;
+
 namespace EfCoreRepository.Models
 {
+    public class LoadHistory
+    {
+        [Key]
+        public int LoadHistoryId { get; set; }
+        public DateTime LastLoadDate { get; set; }
+        public int LoadValusCount { get; set; }
+        public int LoadAttributesCount { get; set; }
+        public int LoadDimentionsCount { get; set; }
+        public decimal AvarageQueryTime { get; set; }
+    }
     public class City
     {
         public int CityId { get; set; }
