@@ -5,10 +5,12 @@ body {
 }
 
 .layout_padding {
-  padding-top: 90px;
-  padding-bottom: 90px;
+  padding-top: 10px;
+  padding-bottom: 30px;
 }
-
+.detail-box {
+  margin-left: 22px;
+}
 .layout_padding2 {
   padding: 45px 0;
 }
@@ -23,7 +25,7 @@ body {
 }
 
 .layout_padding-top {
-  padding-top: 90px;
+  padding-top: 10px;
 }
 
 .layout_padding-bottom {
@@ -56,7 +58,7 @@ body {
 
 /*header section*/
 .hero_area {
-  height: 100vh;
+  height: fit-content;
   background-image: url(../images/hero-bg.jpg);
   background-size: cover;
   position: relative;
@@ -64,16 +66,7 @@ body {
   overflow: hidden;
 }
 
-.hero_area::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 45%;
-  height: 100%;
-  background-image: url(../images/hero-side-bg.png);
-  background-size: cover;
-}
+
 
 .sub_page .hero_area {
   height: auto;

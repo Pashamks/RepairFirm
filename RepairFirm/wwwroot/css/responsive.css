@@ -33,9 +33,6 @@
     transform: none;
   }
 
-  .sub_page .hero_area::after {
-    display: none;
-  }
 
   .navbar-toggler {
     padding: 0.25rem 0;
@@ -75,13 +72,6 @@
 @media (max-width: 768px) {
   .hero_area {
     height: auto;
-  }
-
-  .hero_area::after {
-    background-image: none;
-    background-color: #1fd778;
-    width: 100%;
-    height: 450px;
   }
 
   .slider_section {

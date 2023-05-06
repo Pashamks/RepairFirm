@@ -65,7 +65,7 @@
                 <a class="nav-link" href="Report"> Report </a>
               </li>
             </ul>
-
+          </div>
         </nav>
       </div>
     </header>
@@ -112,97 +112,206 @@
                     <td width="86">@Html.DisplayFor(modelItem => item.ContractId)</td>
                     <td  width="70">@Html.DisplayFor(modelItem => item.RepairCount)</td>
                     <td width="100">@Html.DisplayFor(modelItem => item.RepairTotalHours)</td>
-                    <td width="95">@Html.DisplayFor(modelItem => item.RepairServiceTotalPrice)</td>
-                    <td width="112">@Html.DisplayFor(modelItem => item.RelationToTotalContractHours)</td>
-                    <td width="110">@Html.DisplayFor(modelItem => item.RelationToTotalContractPrice)</td>
-                    <td  width="80">@Html.DisplayFor(modelItem => item.EmployeeCount)</td>
+                    <td width="115">@Html.DisplayFor(modelItem => item.RepairServiceTotalPrice)</td>
+                    <td width="137">@Html.DisplayFor(modelItem => item.RelationToTotalContractHours)</td>
+                    <td width="135">@Html.DisplayFor(modelItem => item.RelationToTotalContractPrice)</td>
+                    <td  width="90">@Html.DisplayFor(modelItem => item.EmployeeCount)</td>
                     </tr>
                 }
                </tbody> 
               
             </table>  
              
-            <form action="Storage/Filter" method="post">
-                 <input type="checkbox" id="IsRepairStartDate" name="IsRepairStartDate">
-                <select id="RepairStartDate" name="RepairStartDate">
+            <form action="Storage/Filter" method="post" class="text-center">
+                 <div class="container">
+                     <div class="col-md-12">
+                <div class="row justify-content-center py-1">
+                    <input type="checkbox" id="IsMinRepairStartDate" name="IsMinRepairStartDate">
+                    <label for="checkbox">Min Repair Start Date:</label>    
+                <select id="MinRepairStartDate" name="MinRepairStartDate">
                                         @foreach(var item in ViewBag.RepairStartDateList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsRepairEndDate" name="IsRepairEndDate">
+                    <input type="checkbox" id="IsMaxRepairStartDate" name="IsMaxRepairStartDate">
+                    <label for="checkbox">Max Repair Start Date:</label>    
+                <select id="MaxRepairStartDate" name="MaxRepairStartDate">
+                                        @foreach(var item in ViewBag.RepairStartDateList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <label for="checkbox">Min Repair End Date:</label>
+                <input type="checkbox" id="IsMinRepairEndDate" name="IsMinRepairEndDate">
 
-                <select  id="RepairEndDate" name="RepairEndDate">
+                <select  id="MinRepairEndDate" name="MinRepairEndDate">
                                         @foreach(var item in ViewBag.RepairEndDateList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsRepairName" name="IsRepairName">
+                </div>
+                <div class="row justify-content-center py-1">
+                     <input type="checkbox" id="IsMaxRepairEndDate" name="IsMaxRepairEndDate">
+                <label for="checkbox">Max Repair End Date:</label>
+              
+                <select  id="MaxRepairEndDate" name="MaxRepairEndDate">
+                                        @foreach(var item in ViewBag.RepairEndDateList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                 <input type="checkbox" id="IsRepairName" name="IsRepairName">
+                <label for="checkbox">Repair Name:</label>
                 <select id="RepairName" name="RepairName">
                                         @foreach(var item in ViewBag.RepairList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsRoomId" name="IsRoomId">
+                </div>
+                <div class="row justify-content-center py-1">
+                     <input type="checkbox" id="IsRoomId" name="IsRoomId">
+                    <label for="checkbox">Room Id:</label>      
                 <select id="RoomId" name="RoomId">
                                         @foreach(var item in ViewBag.RoomIdList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsContractId" name="IsContractId">
+                 <input type="checkbox" id="IsContractId" name="IsContractId">
+                 <label for="checkbox">Contract Id:</label>
                 <select id="ContractId" name="ContractId">
                                         @foreach(var item in ViewBag.ContractIdList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsContractId" name="IsRepairCount">
-                <select  id="RepairCount" name="RepairCount">
+                <input type="checkbox" id="IsMinRepairCount" name="IsMinRepairCount">
+                 <label for="checkbox">Min Repair Count:</label>
+                <select  id="MinRepairCount" name="MinRepairCount">
                                         @foreach(var item in ViewBag.RepairCountList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsContractId" name="IsRepairTotalHours">
-                <select  id="RepairTotalHours" name="RepairTotalHours">
+                <input type="checkbox" id="IsMaxRepairCount" name="IsMaxRepairCount">
+                 <label for="checkbox">Max Repair Count:</label>
+                <select  id="MaxRepairCount" name="MaxRepairCount">
+                                        @foreach(var item in ViewBag.RepairCountList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                 <label for="checkbox">Min Repair Total Hours:</label>
+                <input type="checkbox" id="IsMinRepairTotalHours" name="IsMinRepairTotalHours">
+                <select  id="MinRepairTotalHours" name="MinRepairTotalHours">
                                         @foreach(var item in ViewBag.RepairTotalHoursList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsContractId" name="IsRepairServiceTotalPrice">
-                <select id="RepairServiceTotalPrice" name="RepairServiceTotalPrice">
+                </div>
+
+
+                  <div class="row justify-content-center py-1">
+                  <input type="checkbox" id="IsMaxRepairTotalHours" name="IsMaxRepairTotalHours">
+               <label for="checkbox">Max Repair Total Hours:</label>
+                <select  id="MaxRepairTotalHours" name="MaxRepairTotalHours">
+                                        @foreach(var item in ViewBag.RepairTotalHoursList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                 <input type="checkbox" id="IsMinRepairServiceTotalPrice" name="IsMinRepairServiceTotalPrice">  
+                <label for="checkbox">Min Repair Service Total Price:</label>
+                    
+                <select id="MinRepairServiceTotalPrice" name="MinRepairServiceTotalPrice">
                                         @foreach(var item in ViewBag.RepairServiceTotalPriceList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsContractId" name="IsRelationToTotalContractHours">
-                <select id="RelationToTotalContractHours" name="RelationToTotalContractHours">
+                 <input type="checkbox" id="IsMaxRepairServiceTotalPrice" name="IsMaxRepairServiceTotalPrice">  
+                <label for="checkbox">Max Repair Service Total Price:</label>
+                   
+                <select id="MaxRepairServiceTotalPrice" name="MaxRepairServiceTotalPrice">
+                                        @foreach(var item in ViewBag.RepairServiceTotalPriceList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                </div>
+                <div class="row justify-content-center py-1">
+                <input type="checkbox" id="IsMinRelationToTotalContractHours" name="IsMinRelationToTotalContractHours">
+                <label for="checkbox">Min Relation To Total Contract Hours:</label>
+                
+                <select id="MinRelationToTotalContractHours" name="MinRelationToTotalContractHours">
                                         @foreach(var item in ViewBag.RelationToTotalContractHoursList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
-                <input type="checkbox" id="IsContractId" name="IsRelationToTotalContractPrice">
-                <select id="RelationToTotalContractPrice" name="RelationToTotalContractPrice">
-                                        @foreach(var item in ViewBag.RelationToTotalContractPriceList)
-                                        {
-                                            <option value="@item">@item</option>
-                                        }
-                </select>
-                <input type="checkbox" id="IsContractId" name="IsEmployeeCount">
-                <select id="EmployeeCount" name="EmployeeCount">
-                                        @foreach(var item in ViewBag.EmployeeCountList)
+                <input type="checkbox" id="IsMaxRelationToTotalContractHours" name="IsMaxRelationToTotalContractHours">
+                <label for="checkbox">Max Relation To Total Contract Hours:</label>
+                
+                <select id="MaxRelationToTotalContractHours" name="MaxRelationToTotalContractHours">
+                                        @foreach(var item in ViewBag.RelationToTotalContractHoursList)
                                         {
                                             <option value="@item">@item</option>
                                         }
                 </select>
                
-                <button type="submit">Filter</button>
+                </div>
+               <div class="row justify-content-center py-1">
+                <input type="checkbox" id="IsMinRelationToTotalContractPrice" name="IsMinRelationToTotalContractPrice">
+                <label for="checkbox">Min Relation To Total Contract Price:</label>
+               
+                <select id="MinRelationToTotalContractPrice" name="MinRelationToTotalContractPrice">
+                                        @foreach(var item in ViewBag.RelationToTotalContractPriceList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                 <input type="checkbox" id="IsMaxRelationToTotalContractPrice" name="IsMaxRelationToTotalContractPrice">
+                <label for="checkbox">Max Relation To Total Contract Price:</label>
+                
+                <select id="MaxRelationToTotalContractPrice" name="MaxRelationToTotalContractPrice">
+                                        @foreach(var item in ViewBag.RelationToTotalContractPriceList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                  <input type="checkbox" id="IsMinEmployeeCount" name="IsMinEmployeeCount">
+                <label for="checkbox">Min Employee Count:</label>
+              
+                <select id="MinEmployeeCount" name="MinEmployeeCount">
+                                        @foreach(var item in ViewBag.EmployeeCountList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                  <input type="checkbox" id="IsMaxEmployeeCount" name="IsMaxEmployeeCount">
+                <label for="checkbox">Max Employee Count:</label>
+               
+                <select id="MaxEmployeeCount" name="MaxEmployeeCount">
+                                        @foreach(var item in ViewBag.EmployeeCountList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+               </div>
+               <div class="row justify-content-center">
+                    <button type="submit">Filter</button>
+               </div>
+                   
+                </div>
+                </div>
+               
+            </form>
+            <form method="post" action="Storage/Reload">
+                <button type="submit">Reload</button>
             </form>
          </div> 
           </div>
