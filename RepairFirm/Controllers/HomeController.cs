@@ -23,10 +23,26 @@ namespace RepairFirm.Controllers
             GenerateDonats();
 
             GenerateChart3();
-            GenerateChart4();
             data.RepairCountChartDatas = _dbRepository.GetRepairCountChart();
             data.DepartmentContractDatas = _dbRepository.GetDepartmentServices();
-            return View(data);
+            data.EmployeeForRepairDatas = _dbRepository.GetEmployeeForRepairType();
+
+            Dictionary<string, List<RepairPriceForContract>> points = new Dictionary<string, List<RepairPriceForContract>>();
+            var temp = _dbRepository.GetDepartmentPayments().GroupBy(x => x.CityName);
+            int i = 0, j = 1;
+            foreach (var group in temp)
+            {
+                points[group.Key] = new List<RepairPriceForContract>();
+
+                foreach (var item in group)
+                {
+                    points[group.Key].Add(new RepairPriceForContract { Index = j.ToString(), TotalPrice = item.TotalPrice });
+                    j++;
+                }
+                j = 1;
+            }
+            data.RepairsByCitiesDatas = points;
+                return View(data);
         }
         [HttpGet]
         [Route("Perv")]
@@ -85,15 +101,6 @@ namespace RepairFirm.Controllers
                 ViewData["donatdata" + j] = JsonConvert.SerializeObject(points[j]);
             }
         }
-        private void GenerateChart4()
-        {
-            var chart4 = _dbRepository.GetEmployeeForRepairType().Select(x => new DataPoint
-            {
-                Label = x.RepairType,
-                Y = x.EmpoyeeCount
-            }).ToList(); ;
-            ViewData["chart4"] = JsonConvert.SerializeObject(chart4);
-        }
 
         private void GenerateChart3()
         {
@@ -115,7 +122,6 @@ namespace RepairFirm.Controllers
                     points[i].Add(new DataPoint { Label = j.ToString(), Y = item.TotalPrice });
                     j++;
                 }
-                ViewData["city" + (i + 1)] = group.Key;
                 j = 1;
                 i++;
             }

@@ -131,7 +131,7 @@
   <section class="trending_section layout_padding">
     <div id="accordion">
       <div class="container">
-        <div class="row">
+        <div class="row justify-content-sm-between">
             <div>
                 <div class="col">
                     <h4 style="width: 400px">Популярність типів ремонту (у скількох контрактах присутній)</h4>
@@ -182,7 +182,57 @@
             </table> 
             </div>
              </div>
-               
+           <div>
+               <div class="col">
+                    <h4 style="width: 400px">Сумарна кількість робітників для послуг</h4>
+                <table class="table table-bordered table-fixed" id="tblRepairs">  
+                 <thead>
+                    <tr>  
+                        <th width="200">Repair Type</th>  
+                        <th  width="200">Employee Count</th>  
+                    </tr>  
+                </thead>
+                   
+            <tbody class="scrollit">
+                @foreach (var item in @Model.EmployeeForRepairDatas)
+                                {
+                                    <tr>
+                                        <td width="200">@item.RepairType</td>
+                                        <td width="200">@item.EmpoyeeCount</td>
+                                    </tr>
+                                }
+               </tbody> 
+              
+            </table> 
+            </div>
+             </div>
+               @foreach (var group in @Model.RepairsByCitiesDatas)
+                    {
+                        <div>
+               <div class="col">
+                    <h4 style="width: 400px">Вартість контрактів у місті @group.Key</h4>
+                <table class="table table-bordered table-fixed" id="tblRepairs">  
+                 <thead>
+                    <tr>  
+                        <th width="200">Contract Number</th>  
+                        <th  width="200">Contract Total Price</th>  
+                    </tr>  
+                </thead>
+                   
+            <tbody class="scrollit">
+                @foreach (var item in group.Value)
+                                {
+                                    <tr>
+                                        <td width="200">@item.Index контракт</td>
+                                        <td width="200">@item.TotalPrice</td>
+                                    </tr>
+                                }
+               </tbody> 
+              
+            </table> 
+            </div>
+             </div>
+                    }
             </div>
           </div>
         </div>
