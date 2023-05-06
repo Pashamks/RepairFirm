@@ -236,12 +236,5 @@ namespace RepairFirm.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("GeneratePdf")]
-        public IActionResult GeneratePdf()
-        {
-            return View();
-        }
-
     }
 }

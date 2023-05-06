@@ -13,5 +13,6 @@ namespace EfCoreRepository
         List<EmployeeForRepairData> GetEmployeeForRepairType();
         void PervLoading();
         void IncrementLoading();
+        List<RepairsByCitiesData> GetRepairsByCity();
     }
 }

@@ -80,8 +80,9 @@
           <h1 style="text-align: center;">All repair services</h1>
         <div class="row">
             <div class="col-md-12">
-          <div  style="text-align: center; overflow-y: auto; ">  
-            <table class="table table-bordered table-fixed" id="tblEmployee">  
+
+            <div  style="text-align: center; overflow-y: auto; ">  
+            <table class="table table-bordered table-fixed" id="tblRepairs">  
                  <thead>
                     <tr>  
                         <th width="100">Repair Start Date</th>  
@@ -111,7 +112,7 @@
                     <td width="86">@Html.DisplayFor(modelItem => item.ContractId)</td>
                     <td  width="70">@Html.DisplayFor(modelItem => item.RepairCount)</td>
                     <td width="100">@Html.DisplayFor(modelItem => item.RepairTotalHours)</td>
-                    <td width="95">@Html.DisplayFor(modelItem => item.RepairTotalPrcie)</td>
+                    <td width="95">@Html.DisplayFor(modelItem => item.RepairServiceTotalPrice)</td>
                     <td width="112">@Html.DisplayFor(modelItem => item.RelationToTotalContractHours)</td>
                     <td width="110">@Html.DisplayFor(modelItem => item.RelationToTotalContractPrice)</td>
                     <td  width="80">@Html.DisplayFor(modelItem => item.EmployeeCount)</td>
@@ -120,6 +121,89 @@
                </tbody> 
               
             </table>  
+             
+            <form action="Storage/Filter" method="post">
+                 <input type="checkbox" id="IsRepairStartDate" name="IsRepairStartDate">
+                <select id="RepairStartDate" name="RepairStartDate">
+                                        @foreach(var item in ViewBag.RepairStartDateList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsRepairEndDate" name="IsRepairEndDate">
+
+                <select  id="RepairEndDate" name="RepairEndDate">
+                                        @foreach(var item in ViewBag.RepairEndDateList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsRepairName" name="IsRepairName">
+                <select id="RepairName" name="RepairName">
+                                        @foreach(var item in ViewBag.RepairList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsRoomId" name="IsRoomId">
+                <select id="RoomId" name="RoomId">
+                                        @foreach(var item in ViewBag.RoomIdList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsContractId">
+                <select id="ContractId" name="ContractId">
+                                        @foreach(var item in ViewBag.ContractIdList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsRepairCount">
+                <select  id="RepairCount" name="RepairCount">
+                                        @foreach(var item in ViewBag.RepairCountList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsRepairTotalHours">
+                <select  id="RepairTotalHours" name="RepairTotalHours">
+                                        @foreach(var item in ViewBag.RepairTotalHoursList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsRepairServiceTotalPrice">
+                <select id="RepairServiceTotalPrice" name="RepairServiceTotalPrice">
+                                        @foreach(var item in ViewBag.RepairServiceTotalPriceList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsRelationToTotalContractHours">
+                <select id="RelationToTotalContractHours" name="RelationToTotalContractHours">
+                                        @foreach(var item in ViewBag.RelationToTotalContractHoursList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsRelationToTotalContractPrice">
+                <select id="RelationToTotalContractPrice" name="RelationToTotalContractPrice">
+                                        @foreach(var item in ViewBag.RelationToTotalContractPriceList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+                <input type="checkbox" id="IsContractId" name="IsEmployeeCount">
+                <select id="EmployeeCount" name="EmployeeCount">
+                                        @foreach(var item in ViewBag.EmployeeCountList)
+                                        {
+                                            <option value="@item">@item</option>
+                                        }
+                </select>
+               
+                <button type="submit">Filter</button>
+            </form>
          </div> 
           </div>
           
@@ -245,6 +329,8 @@
       }
 
     });
+    
+}
   </script>
   <script>
     var nav = $("#navbarSupportedContent");

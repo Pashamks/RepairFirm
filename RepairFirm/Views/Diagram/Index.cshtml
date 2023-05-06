@@ -1,7 +1,6 @@
 ﻿@{
     var repairChart = ViewData["repairChart"];
     var departmetnCountChart = ViewData["departmetnCountChart"];
- 
 }
 <!DOCTYPE HTML>
 <html>
@@ -13,7 +12,7 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	animationEnabled: true,
 	theme: "light1",
 	title: {
-		text: "Популярність типів ремонту"
+		text: "Популярність типів ремонту (у скількох контрактах присутній)"
 	},
 	axisY: {
 		scaleBreaks: {
@@ -88,7 +87,6 @@ var chart3 = new CanvasJS.Chart("chartContainertest", {
 chart3.render();
  
 
-
 var chart4 = new CanvasJS.Chart("chartContainerEmployee", {
 	animationEnabled: true,
 	theme: "light1",
@@ -112,6 +110,309 @@ var chart4 = new CanvasJS.Chart("chartContainerEmployee", {
 	}]
 });
 chart4.render();
+
+
+var donat0 = new CanvasJS.Chart("donat0", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Полтава" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata0"])
+	}]
+});
+donat0.render();
+
+
+var donat1 = new CanvasJS.Chart("donat1", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Одеса" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata1"])
+	}]
+});
+donat1.render();
+
+var donat2 = new CanvasJS.Chart("donat2", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Харків" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata2"])
+	}]
+});
+donat2.render();
+
+var donat3 = new CanvasJS.Chart("donat3", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Київ" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata3"])
+	}]
+});
+donat3.render();
+
+var donat4 = new CanvasJS.Chart("donat4", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Запоріжжя" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata4"])
+	}]
+});
+donat4.render();
+
+var donat5 = new CanvasJS.Chart("donat5", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Черкаси" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata5"])
+	}]
+});
+donat5.render();
+
+
+var donat6 = new CanvasJS.Chart("donat6", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Суми" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata6"])
+	}]
+});
+donat6.render();
+
+var donat7 = new CanvasJS.Chart("donat7", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Херсон" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata7"])
+	}]
+});
+donat7.render();
+
+var donat8 = new CanvasJS.Chart("donat8", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Чернігів" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata8"])
+	}]
+});
+donat8.render();
+
+var donat9 = new CanvasJS.Chart("donat9", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Маріуполь" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata9"])
+	}]
+});
+donat9.render();
+
+var donat10 = new CanvasJS.Chart("donat10", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Бердянськ" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata10"])
+	}]
+});
+donat10.render();
+
+var donat11 = new CanvasJS.Chart("donat11", {
+		animationEnabled: true,
+	theme: "light1",
+	title: {
+		text: "Кількість та типи послуг які надані у місті Кривий ріг" 
+	},
+	axisY: {
+		scaleBreaks: {
+			autoCalculate: true,
+			type: "wavy",
+			lineColor: "black"
+		},
+		gridThickness: 0,
+		suffix: "",
+		labelWrap: true
+	},
+	data: [{
+		type: "pie",
+		toolTipContent: "<b>{label}</b>: {y}",
+		indexLabel: "{label} - {y}",
+		dataPoints:  @Html.Raw(ViewData["donatdata11"])
+	}]
+});
+donat11.render();
 }
 </script>
   <!-- slider stylesheet -->
@@ -169,14 +470,37 @@ chart4.render();
     </header>
     <!-- end header section -->
     <!-- slider section -->
-    <section class="slider_section ">
-      <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <section class="slider_section " style="display: flex;">
+		<div id="chartContainer" style="height: 370px; width: 100%;"></div>
     </section>
     <!-- end slider section -->
   </div>
 
   <!-- trending section -->
 
+   <section class="about_section layout_padding">
+	   <div class="col">
+		    <div class="row">
+			<div id="donat0" style="height: 370px; width: 30%;"></div>
+			<div id="donat1" style="height: 370px; width: 30%;"></div>
+			<div id="donat2" style="height: 370px; width: 30%;"></div>
+      </div>
+	   <div class="row">
+			 <div id="donat3" style="height: 370px; width: 30%;"></div>
+		<div id="donat4" style="height: 370px; width: 30%;"></div>
+		<div id="donat5" style="height: 370px; width: 30%;"></div>
+      </div>
+	   <div class="row">
+			 <div id="donat6" style="height: 370px; width: 30%;"></div>
+			<div id="donat7" style="height: 370px; width: 30%;"></div>
+			<div id="donat8" style="height: 370px; width: 30%;"></div>
+      </div>
+	   <div class="row">
+			  <div id="donat9" style="height: 370px; width: 30%;"></div>
+			<div id="donat10" style="height: 370px; width: 30%;"></div>
+			<div id="donat11" style="height: 370px; width: 30%;"></div>
+      </div>
+	   </div>
   <section class="trending_section layout_padding">
     <div id="chartContainerDepartment" style="height: 370px; width: 100%;"></div>
   </section>
@@ -188,7 +512,7 @@ chart4.render();
 
   <section class="brand_section">
   <div id="chartContainertest" style="height: 370px; width: 100%;"></div>
-  </section>
+  </section>    
 
   <!-- end brand section -->
   <!-- contact section -->

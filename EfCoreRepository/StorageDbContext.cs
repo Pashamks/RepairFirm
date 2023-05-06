@@ -103,6 +103,18 @@ namespace EfCoreRepository
 	
             END 
             GO
+
+            CREATE PROCEDURE get_repairs_by_cities
+                        AS 
+                        BEGIN 
+            SELECT  dr.repairType, rsf.repairCount, dci.cityName
+              FROM [RepairFirmaStorage].[dbo].[RepairServicesFact] as rsf
+              INNER JOIN [RepairFirmaStorage].[dbo].DimContract as dc on dc.contractKey = rsf.contractId
+              INNER JOIN [RepairFirmaStorage].[dbo].DimDepartment as dd on dd.departmentKey = dc.departmentId
+              INNER JOIN [RepairFirmaStorage].[dbo].DimRepair as dr on dr.repairKey = rsf.repairId
+              INNER JOIN [RepairFirmaStorage].[dbo].DimCity as dci on dci.cityKey = dd.cityId
+              END 
+             GO
             ";
 
         }

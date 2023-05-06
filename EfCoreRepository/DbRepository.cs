@@ -53,5 +53,10 @@ namespace EfCoreRepository
             _connection.Query("upload_incremental", commandType: CommandType.StoredProcedure).ToList();
             _connection.Query("delete_from_staging", commandType: CommandType.StoredProcedure).ToList();
         }
+
+        public List<RepairsByCitiesData> GetRepairsByCity()
+        {
+            return _connection.Query<RepairsByCitiesData>("get_repairs_by_cities", commandType: CommandType.StoredProcedure).ToList();
+        }
     }
 }
