@@ -262,6 +262,7 @@ namespace EfCoreRepository.Models
 
     public class DimDate
     {
+        [Key]
         public int DateKey { get; set; }
         public int Day { get; set; }
         public int Month { get; set; }
@@ -270,6 +271,7 @@ namespace EfCoreRepository.Models
 
     public class DimCity
     {
+        [Key]
         public int CityKey { get; set; }
         public int CityId { get; set; }
         public string CityName { get; set; }
@@ -277,6 +279,7 @@ namespace EfCoreRepository.Models
 
     public class DimDepartment
     {
+        [Key]
         public int DepartmentKey { get; set; }
         public int DepartmentId { get; set; }
         public int CityId { get; set; }
@@ -287,6 +290,7 @@ namespace EfCoreRepository.Models
 
     public class DimClient
     {
+        [Key]
         public int ClientKey { get; set; }
         public int ClientId { get; set; }
         public string FullName { get; set; }
@@ -296,6 +300,7 @@ namespace EfCoreRepository.Models
 
     public class DimApartment
     {
+        [Key]
         public int ApartmentKey { get; set; }
         public int ApartmentId { get; set; }
         public int ClientId { get; set; }
@@ -309,6 +314,7 @@ namespace EfCoreRepository.Models
 
     public class DimRoom
     {
+        [Key]
         public int RoomKey { get; set; }
         public int RoomId { get; set; }
         public int ApartmentId { get; set; }
@@ -324,6 +330,7 @@ namespace EfCoreRepository.Models
 
     public class DimRepair
     {
+        [Key]
         public int RepairKey { get; set; }
         public int RepairId { get; set; }
         public string RepairType { get; set; }
@@ -336,6 +343,7 @@ namespace EfCoreRepository.Models
 
     public class DimContract
     {
+        [Key]
         public int ContractKey { get; set; }
         public int ContractId { get; set; }
         public int ContractStartDateId { get; set; }
@@ -349,6 +357,7 @@ namespace EfCoreRepository.Models
 
     public class RepairServicesFact
     {
+        [Key]
         public int RepairServicesKey { get; set; }
         public int RepairServicesId { get; set; }
         public int RepairStartDateId { get; set; }

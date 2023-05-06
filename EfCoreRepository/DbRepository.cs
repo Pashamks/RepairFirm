@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using RepairFirm.Shared.Models;
 using System.Data;
 
@@ -108,9 +109,13 @@ namespace EfCoreRepository
                     OLTPTablesAndCount.Add(nameof(ctx.City), ctx.City.Count());
 
                     metadata.OLTPTablesAndCount = OLTPTablesAndCount;
+                    metadata.OLTPDatabaseName = ctx.Database.GetDbConnection().Database;
                 }
                 metadata.TotalOLTPRows = metadata.OLTPTablesAndCount.Sum(x => x.Value);
+                
             }
+            using (var ctx = new StorageDbContext())
+                metadata.StorageDatabaseName = ctx.Database.GetDbConnection().Database;
             return metadata;
         }
     }

@@ -10,5 +10,7 @@ namespace RepairFirm.Shared.Models
         public int LoadAttributesCount { get; set; }
         public int LoadDimentionsCount { get; set; }
         public decimal AvarageQueryTime { get; set; }
+        public string OLTPDatabaseName { get; set; }
+        public string StorageDatabaseName { get; set; }
     }
 }
