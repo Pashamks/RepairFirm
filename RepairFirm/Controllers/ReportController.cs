@@ -22,7 +22,7 @@ namespace RepairFirm.Controllers
         public IActionResult Index()
         {
 
-            if (System.IO.File.Exists("new.pdf"))
+            if (System.IO.File.Exists("report.pdf"))
             {
                 return View();
             }
@@ -67,9 +67,37 @@ namespace RepairFirm.Controllers
             document.AddTitle("Repair firm analysis report");
 
             AddDiagram(document, "Popularity of repair types", GenerateImgForRepairsPopular());
+
+            var donats = _dbRepository.GetRepairsByCity().GroupBy(x => x.CityName);
+            var repairsByCitiesDatas = new Dictionary<string, List<RepairsByCitiesData>>();
+            int newPage = 0;
+            foreach (var group in donats)
+            {
+                repairsByCitiesDatas[group.Key] = new List<RepairsByCitiesData>();
+                foreach (var item in group)
+                {
+                    repairsByCitiesDatas[group.Key].Add(item);
+                }
+               
+            }
+            foreach (var item in repairsByCitiesDatas.Keys)
+            {
+                var dist = repairsByCitiesDatas[item].DistinctBy(x => x.RepairType).ToList();
+                foreach (var d in dist)
+                {
+                    d.RepairCount = repairsByCitiesDatas[item].Where(x => x.RepairType == d.RepairType).Sum(x => x.RepairCount);
+                }
+                repairsByCitiesDatas[item] = dist;
+                AddPie(document, GenerateImgForCity($"Ремонти в                    {item}", repairsByCitiesDatas[item]), newPage % 2);
+                newPage++;
+            }
+
+
             AddDiagram(document, "Amount of contracts in each city", GenerateImgForContractCounts());
             AddDiagram(document, "Countract price in the most popular departments", GenerateImgForContractPrice());
             AddDiagram(document, "Employee count for repair types", GenerateImgForEmployeeCount());
+
+
             var table = new PdfPTable(2)
             {
                 WidthPercentage = 100,
@@ -92,6 +120,19 @@ namespace RepairFirm.Controllers
 
 
             return View();
+        }
+        private Bitmap GenerateImgForCity(string title, List<RepairsByCitiesData> data)
+        {
+            var plt = new ScottPlot.Plot(550, 250);
+            //plt.ManualDataArea(new PixelPadding(30,30,30,30));
+            
+            plt.Title(title);
+            var pie = plt.AddPie(data.Select(x => Convert.ToDouble(x.RepairCount)).ToArray());
+            pie.SliceLabels = data.Select(x => x.RepairType).ToArray();
+            pie.ShowValues = true;
+            plt.Legend();
+            System.Drawing.Bitmap bmp = plt.Render();
+            return bmp;
         }
         private Bitmap GenerateImgForContractPrice()
         {
@@ -235,6 +276,27 @@ namespace RepairFirm.Controllers
                 document.Add(png);
             }
         }
-
+        private void AddPie(Document document, Bitmap bmp, int newPage)
+        {
+            if (newPage == 0)
+                document.NewPage();
+            else
+                document.Add(new PdfDiv()
+                {
+                    Bottom = 10.5f
+                });
+            //document.Add(new Paragraph(new Phrase { new Chunk((name).ToUpper()) })
+            //{
+            //    Alignment = Element.ALIGN_CENTER,
+            //});
+            using (var stream2 = new MemoryStream())
+            {
+                bmp.Save(stream2, System.Drawing.Imaging.ImageFormat.Png);
+                stream2.Position = 0;
+                var png = iTextSharp.text.Image.GetInstance(stream2);
+                png.Alignment = Element.ALIGN_CENTER;
+                document.Add(png);
+            }
+        }
     }
 }

@@ -52,7 +52,16 @@ namespace RepairFirm.Controllers
                     repairsByCitiesDatas[group.Key].Add(item);
                 }
             }
-
+            foreach (var item in repairsByCitiesDatas.Keys)
+            {
+                var dist = repairsByCitiesDatas[item].DistinctBy(x => x.RepairType).ToList();
+                foreach (var d in dist)
+                {
+                    d.RepairCount = repairsByCitiesDatas[item].Where(x => x.RepairType == d.RepairType).Sum(x => x.RepairCount);
+                }
+                repairsByCitiesDatas[item] = dist;
+            }
+      
             data.RepairsByCitiesDatas = repairsByCitiesDatas;
             return View(data);
         }
