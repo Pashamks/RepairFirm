@@ -7,7 +7,8 @@ namespace RepairFirm.Shared.Models
         public List<RepairCountChartData> RepairCountChartDatas { get; set; }
         public List<DepartmentContractData> DepartmentContractDatas { get; set; }
         public List<EmployeeForRepairData> EmployeeForRepairDatas { get; set; }
-        public Dictionary<string,List<RepairPriceForContract>> RepairsByCitiesDatas { get; set; }
+        public Dictionary<string, List<RepairPriceForContract>> RepairsPriceForContractsDatas { get; set; }
+        public Dictionary<string, List<RepairsByCitiesData>> RepairsByCitiesDatas { get; set; }
     }
     public class RepairPriceForContract
     {

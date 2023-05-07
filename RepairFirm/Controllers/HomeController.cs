@@ -22,7 +22,6 @@ namespace RepairFirm.Controllers
             data.IsConnected = _repairDbContext.Database.CanConnect();
             GenerateDonats();
 
-            GenerateChart3();
             data.RepairCountChartDatas = _dbRepository.GetRepairCountChart();
             data.DepartmentContractDatas = _dbRepository.GetDepartmentServices();
             data.EmployeeForRepairDatas = _dbRepository.GetEmployeeForRepairType();
@@ -41,8 +40,21 @@ namespace RepairFirm.Controllers
                 }
                 j = 1;
             }
-            data.RepairsByCitiesDatas = points;
-                return View(data);
+            data.RepairsPriceForContractsDatas = points;
+
+            var donats = _dbRepository.GetRepairsByCity().GroupBy(x => x.CityName);
+            Dictionary<string, List<RepairsByCitiesData>> repairsByCitiesDatas = new Dictionary<string, List<RepairsByCitiesData>>();
+            foreach (var group in donats)
+            {
+                repairsByCitiesDatas[group.Key] = new List<RepairsByCitiesData>();
+                foreach (var item in group)
+                {
+                    repairsByCitiesDatas[group.Key].Add(item);
+                }
+            }
+
+            data.RepairsByCitiesDatas = repairsByCitiesDatas;
+            return View(data);
         }
         [HttpGet]
         [Route("Perv")]
@@ -102,39 +114,6 @@ namespace RepairFirm.Controllers
             }
         }
 
-        private void GenerateChart3()
-        {
-            #region 3 Chart
-
-            List<DataPoint> dataPoints1 = new List<DataPoint>();
-            List<DataPoint> dataPoints2 = new List<DataPoint>();
-            List<DataPoint> dataPoints3 = new List<DataPoint>();
-
-            List<List<DataPoint>> points = new List<List<DataPoint>>();
-            var temp = _dbRepository.GetDepartmentPayments().GroupBy(x => x.CityName);
-            int i = 0, j = 1;
-            foreach (var group in temp)
-            {
-                points.Add(new List<DataPoint>());
-
-                foreach (var item in group)
-                {
-                    points[i].Add(new DataPoint { Label = j.ToString(), Y = item.TotalPrice });
-                    j++;
-                }
-                j = 1;
-                i++;
-            }
-
-            dataPoints1 = points[0];
-            dataPoints2 = points[1];
-            dataPoints3 = points[2];
-
-
-            ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);
-            ViewBag.DataPoints2 = JsonConvert.SerializeObject(dataPoints2);
-            ViewBag.DataPoints3 = JsonConvert.SerializeObject(dataPoints3);
-            #endregion
-        }
+       
     }
 }
