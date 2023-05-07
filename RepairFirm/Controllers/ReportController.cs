@@ -57,7 +57,7 @@ namespace RepairFirm.Controllers
             #endregion
             
 
-            var stream = new FileStream("new.pdf", FileMode.CreateNew);
+            var stream = new FileStream("report.pdf", FileMode.CreateNew);
 
             var document = new Document(PageSize.A4, 25, 25, 30, 30);
             var writer = PdfWriter.GetInstance(document, stream);
