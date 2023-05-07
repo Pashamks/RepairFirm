@@ -66,6 +66,11 @@ namespace RepairFirm.Controllers
             document.AddAuthor("Pavlo Somko");
             document.AddTitle("Repair firm analysis report");
 
+            AddGeneralPage(document);
+            AddFactTable(document);
+
+            AddOthersTables(document);
+
             AddDiagram(document, "Popularity of repair types", GenerateImgForRepairsPopular());
 
             var donats = _dbRepository.GetRepairsByCity().GroupBy(x => x.CityName);
@@ -97,30 +102,229 @@ namespace RepairFirm.Controllers
             AddDiagram(document, "Countract price in the most popular departments", GenerateImgForContractPrice());
             AddDiagram(document, "Employee count for repair types", GenerateImgForEmployeeCount());
 
-
-            var table = new PdfPTable(2)
-            {
-                WidthPercentage = 100,
-                SpacingBefore = 10,
-            };
-
-            //table.AddCell(new PdfPCell(pdfImage)
-            //{
-            //    Border = 0
-            //});
-            document.Add(table);
-            document.NewPage();
-            document.Add(new Paragraph(new Phrase { new Chunk(("General table").ToUpper()) })
-            {
-                Alignment = Element.ALIGN_CENTER,
-            });
-
             document.Close();
             writer.Close();
 
 
             return View();
         }
+
+        private void AddOthersTables(Document document)
+        {
+            document.NewPage();
+            document.Add(new Paragraph(new Phrase { new Chunk(("Popularity of repair types (in how many contracts it is present)").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            var table = new PdfPTable(2)
+            {
+                WidthPercentage = 100,
+                SpacingBefore = 10,
+            };
+
+            AddOthersTablesCell(table, "Repair Type", "Repair Count");
+            foreach (var item in _dbRepository.GetRepairCountChart())
+            {
+                AddOthersTablesCell(table, dict1[item.RepairType], item.RepairCount.ToString());
+            }
+            document.Add(table);
+
+            document.Add(new Paragraph(new Phrase { new Chunk(("The number of signed contracts by city").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            table = new PdfPTable(2)
+            {
+                WidthPercentage = 100,
+                SpacingBefore = 10,
+            };
+
+            AddOthersTablesCell(table, "City Name", "Services Count");
+            foreach (var item in _dbRepository.GetDepartmentServices())
+            {
+                AddOthersTablesCell(table, cities[item.CityName], item.ServicesCount.ToString());
+            }
+            document.Add(table);
+
+
+            document.Add(new Paragraph(new Phrase { new Chunk(("Total number of workers for services").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            table = new PdfPTable(2)
+            {
+                WidthPercentage = 100,
+                SpacingBefore = 10,
+            };
+
+            AddOthersTablesCell(table, "Repair Type", "Employee Count");
+            foreach (var item in _dbRepository.GetEmployeeForRepairType())
+            {
+                AddOthersTablesCell(table, dict1[item.RepairType], item.EmpoyeeCount.ToString());
+            }
+            document.Add(table);
+
+
+            Dictionary<string, List<RepairPriceForContract>> points = new Dictionary<string, List<RepairPriceForContract>>();
+            var temp = _dbRepository.GetDepartmentPayments().GroupBy(x => x.CityName);
+            int i = 0, j = 1;
+            foreach (var group in temp)
+            {
+                points[group.Key] = new List<RepairPriceForContract>();
+
+                foreach (var item in group)
+                {
+                    points[group.Key].Add(new RepairPriceForContract { Index = j.ToString(), TotalPrice = item.TotalPrice });
+                    j++;
+                }
+                j = 1;
+            }
+            foreach (var gourp in points)
+            {
+                document.Add(new Paragraph(new Phrase { new Chunk(($"Cost of contracts in the city {cities[gourp.Key]}").ToUpper()) })
+                {
+                    Alignment = Element.ALIGN_CENTER,
+                });
+                table = new PdfPTable(2)
+                {
+                    WidthPercentage = 100,
+                    SpacingBefore = 10,
+                };
+
+                AddOthersTablesCell(table, "Contract Number", "Contract Price");
+                foreach (var item in gourp.Value)
+                {
+                    AddOthersTablesCell(table, item.Index + " contract",  item.TotalPrice.ToString());
+                }
+                document.Add(table);
+            }
+
+
+            var donats = _dbRepository.GetRepairsByCity().GroupBy(x => x.CityName);
+            Dictionary<string, List<RepairsByCitiesData>> repairsByCitiesDatas = new Dictionary<string, List<RepairsByCitiesData>>();
+            foreach (var group in donats)
+            {
+                repairsByCitiesDatas[group.Key] = new List<RepairsByCitiesData>();
+                foreach (var item in group)
+                {
+                    repairsByCitiesDatas[group.Key].Add(item);
+                }
+            }
+            foreach (var item in repairsByCitiesDatas.Keys)
+            {
+                var dist = repairsByCitiesDatas[item].DistinctBy(x => x.RepairType).ToList();
+                foreach (var d in dist)
+                {
+                    d.RepairCount = repairsByCitiesDatas[item].Where(x => x.RepairType == d.RepairType).Sum(x => x.RepairCount);
+                }
+                repairsByCitiesDatas[item] = dist;
+            }
+
+            foreach (var gourp in repairsByCitiesDatas)
+            {
+                document.Add(new Paragraph(new Phrase { new Chunk(($"Number and types of services provided in the city {cities[gourp.Key]}").ToUpper()) })
+                {
+                    Alignment = Element.ALIGN_CENTER,
+                });
+                table = new PdfPTable(2)
+                {
+                    WidthPercentage = 100,
+                    SpacingBefore = 10,
+                };
+
+                AddOthersTablesCell(table, "Repair Type", "Repair Count");
+                foreach (var item in gourp.Value)
+                {
+                    AddOthersTablesCell(table, dict1[item.RepairType], item.RepairCount.ToString());
+                }
+                document.Add(table);
+            }
+        }
+        private void AddOthersTablesCell(PdfPTable table, string h1, string h2)
+        {
+            table.AddCell(new PdfPCell(new Phrase(h1)));
+            table.AddCell(new PdfPCell(new Phrase(h2)));
+        }
+
+        private void AddFactTable(Document document)
+        {
+            document.NewPage();
+            document.Add(new Paragraph(new Phrase { new Chunk(("All repairs table").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            var table = new PdfPTable(11)
+            {
+                WidthPercentage = 100,
+                SpacingBefore = 10,
+            };
+            
+            AddHeaderRow(table);
+            foreach (var item in _dbRepository.GetRepairServicesFacts())
+            {
+                AddContentRow(table, item);
+            }
+            document.Add(table);
+        }
+        private void AddGeneralPage(Document document)
+        {
+            document.Add(new Paragraph(new Phrase { new Chunk(("General repair firm analysis report").ToUpper()) })
+            {
+                Alignment = Element.ALIGN_CENTER,
+            });
+            document.Add(new Paragraph(new Phrase { new Chunk("On the first page you can find general information about this report file.") })
+            {
+                Alignment = Element.ALIGN_JUSTIFIED
+            });
+            document.Add(new Paragraph(new Phrase { new Chunk("From the second page to seventh you can find fact table with all main data in Repair Firm Storage.") })
+            {
+                Alignment = Element.ALIGN_JUSTIFIED
+            });
+            //document.Add(new Paragraph(new Phrase { new Chunk("On the third page you can find business analysis task 1 with list of sorted items by quantity and general quantity diagram.") })
+            //{
+            //    Alignment = Element.ALIGN_JUSTIFIED
+            //});
+            //document.Add(new Paragraph(new Phrase { new Chunk("On the forth page you can find business analysis task 2 with list of sorted items by income and general income diagram.") })
+            //{
+            //    Alignment = Element.ALIGN_JUSTIFIED
+            //});
+            //document.Add(new Paragraph(new Phrase { new Chunk("On the forth page you can find business analysis task 3 with list of item with negative income compared to previous period.") })
+            //{
+            //    Alignment = Element.ALIGN_JUSTIFIED
+            //});
+        }
+
+        private void AddContentRow(PdfPTable table, RepairServicesFactModel repair)
+        {
+            table.AddCell(new PdfPCell(new Phrase(repair.RepairStartDate.ToString("yyyy-MM-dd"))));
+            table.AddCell(new PdfPCell(new Phrase(repair.RepairEndDate.ToString("yyyy-MM-dd"))));
+            table.AddCell(new PdfPCell(new Phrase(ukrToEngDictionary[repair.RepairName])));
+            table.AddCell(new PdfPCell(new Phrase(repair.RoomId.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.ContractId.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.RepairCount.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.RepairTotalHours.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.RepairServiceTotalPrice.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.RelationToTotalContractHours.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.RelationToTotalContractPrice.ToString())));
+            table.AddCell(new PdfPCell(new Phrase(repair.EmployeeCount.ToString())));
+
+        }
+
+        private void AddHeaderRow(PdfPTable table)
+        {
+            table.AddCell(new PdfPCell(new Phrase("Start Date")));
+            table.AddCell(new PdfPCell(new Phrase("End Date")));
+            table.AddCell(new PdfPCell(new Phrase("Name")));
+            table.AddCell(new PdfPCell(new Phrase("Room Id")));
+            table.AddCell(new PdfPCell(new Phrase("Contract Id")));
+            table.AddCell(new PdfPCell(new Phrase("Repair Count")));
+            table.AddCell(new PdfPCell(new Phrase("Total Hours")));
+            table.AddCell(new PdfPCell(new Phrase("Service Total Price")));
+            table.AddCell(new PdfPCell(new Phrase("Relation To Total Contract Hours")));
+            table.AddCell(new PdfPCell(new Phrase("Relation To Total Contract Price")));
+            table.AddCell(new PdfPCell(new Phrase("Employee Count")));
+        }
+
         private Bitmap GenerateImgForCity(string title, List<RepairsByCitiesData> data)
         {
             var plt = new ScottPlot.Plot(550, 250);
@@ -298,5 +502,68 @@ namespace RepairFirm.Controllers
                 document.Add(png);
             }
         }
+        Dictionary<string, string> cities = new Dictionary<string, string>()
+{
+    {"Київ", "Kyiv"},
+    {"Харків", "Kharkiv"},
+    {"Одеса", "Odesa"},
+    {"Дніпро", "Dnipro"},
+    {"Бердянськ", "Berdyansk"},
+    {"Запоріжжя", "Zaporizhzhia"},
+    {"Кривий Ріг", "Kryvyi Rih"},
+    {"Миколаїв", "Mykolaiv"},
+    {"Маріуполь", "Mariupol"},
+    {"Херсон", "Kherson"},
+    {"Чернігів", "Chernihiv"},
+    {"Полтава", "Poltava"},
+    {"Черкаси", "Cherkasy"},
+    {"Суми", "Sumy"},
+    {"Житомир", "Zhytomyr"},
+    {"Північний Братослав", "North Bratoslava"}
+};
+        Dictionary<string, string> ukrToEngDictionary = new Dictionary<string, string>()
+{
+    {"Ремонт кухні", "Kitchen renovation"},
+    {"Ремонт спальні", "Bedroom renovation"},
+    {"Ремонт дитячої кімнати", "Children's room renovation"},
+    {"Ремонт вітальні", "Living room renovation"},
+    {"Ремонт офісу", "Office renovation"},
+    {"Ремонт балкону", "Balcony renovation"},
+    {"Ремонт ванної кімнати", "Bathroom renovation"},
+    {"Косметичний ремонт кухні", "Cosmetic kitchen renovation"},
+    {"Капітальний ремонт квартири", "Capital apartment renovation"},
+    {"Косметичний ремонт ванної кімнати", "Cosmetic bathroom renovation"},
+    {"Ремонт стелі в головній спальні", "Ceiling renovation in the master bedroom"},
+    {"Ремонт підлоги в гостьовій кімнаті", "Guest room floor renovation"},
+    {"Ремонт кухонного блоку", "Kitchen unit renovation"},
+    {"Стандартний ремонт віконних рам", "Standard window frame repair"},
+    {"Мінімальний ремонт сходів", "Minimal stair repair"},
+    {"Мінімальний ремонт віконних рам", "Minimal window frame repair"},
+    {"Ремонт кімнати в стилі хай-тек", "High-tech room renovation"},
+    {"Ремонт балкона", "Balcony renovation"},
+    {"Монтаж відеодомофону", "Video intercom installation"},
+    {"Встановлення бойлера", "Boiler installation"},
+    {"Ремонт замку на вхідних дверях", "Entrance door lock repair"},
+    {"Встановлення світильників", "Lamp installation"},
+    {"Монтаж кондиціонера", "Air conditioner installation"},
+    {"Встановлення нової системи опалення", "New heating system installation"},
+    {"Ремонт водопровідної системи на кухні", "Kitchen plumbing system repair"},
+    {"Поклейка нового шпалерного покриття в спальні", "New wallpaper installation in the bedroom"},
+    {"Заміна старих розеток на нові на всій квартирі", "Replacing old sockets with new ones throughout the apartment"}
+};
+        Dictionary<string, string> dict1 = new Dictionary<string, string>()
+{
+    {"Сантехнічний ремонт", "Plumbing repair"},
+    {"Під ключ", "Turnkey"},
+    {"Заміна вікон", "Window replacement"},
+    {"Ремонт підлоги", "Floor repair"},
+    {"Малювання стін", "Wall painting"},
+    {"Ванна кімната", "Bathroom"},
+    {"Кухня", "Kitchen"},
+    {"Євроремонт", "Euro-repair"},
+    {"Балкон", "Balcony"},
+    {"Коридор", "Hallway"}
+};
+
     }
 }

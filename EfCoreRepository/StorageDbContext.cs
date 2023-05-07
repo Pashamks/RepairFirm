@@ -22,7 +22,7 @@ namespace EfCoreRepository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             string sql = @"
-            REATE PROCEDURE get_fact 
+            CREATE PROCEDURE get_fact 
             AS 
             BEGIN 
 
