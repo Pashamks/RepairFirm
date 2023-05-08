@@ -253,7 +253,7 @@ namespace RepairFirm.Controllers
             {
                 Alignment = Element.ALIGN_CENTER,
             });
-            var table = new PdfPTable(11)
+            var table = new PdfPTable(9)
             {
                 WidthPercentage = 100,
                 SpacingBefore = 10,
@@ -303,8 +303,6 @@ namespace RepairFirm.Controllers
             table.AddCell(new PdfPCell(new Phrase(repair.RepairStartDate.ToString("yyyy-MM-dd"))));
             table.AddCell(new PdfPCell(new Phrase(repair.RepairEndDate.ToString("yyyy-MM-dd"))));
             table.AddCell(new PdfPCell(new Phrase(ukrToEngDictionary[repair.RepairName])));
-            table.AddCell(new PdfPCell(new Phrase(repair.RoomId.ToString())));
-            table.AddCell(new PdfPCell(new Phrase(repair.ContractId.ToString())));
             table.AddCell(new PdfPCell(new Phrase(repair.RepairCount.ToString())));
             table.AddCell(new PdfPCell(new Phrase(repair.RepairTotalHours.ToString())));
             table.AddCell(new PdfPCell(new Phrase(repair.RepairServiceTotalPrice.ToString())));
@@ -319,8 +317,6 @@ namespace RepairFirm.Controllers
             table.AddCell(new PdfPCell(new Phrase("Start Date")));
             table.AddCell(new PdfPCell(new Phrase("End Date")));
             table.AddCell(new PdfPCell(new Phrase("Name")));
-            table.AddCell(new PdfPCell(new Phrase("Room Id")));
-            table.AddCell(new PdfPCell(new Phrase("Contract Id")));
             table.AddCell(new PdfPCell(new Phrase("Repair Count")));
             table.AddCell(new PdfPCell(new Phrase("Total Hours")));
             table.AddCell(new PdfPCell(new Phrase("Service Total Price")));
