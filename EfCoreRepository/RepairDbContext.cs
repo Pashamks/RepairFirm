@@ -5,7 +5,7 @@ namespace EfCoreRepository
 {
     public class RepairDbContext : DbContext
     {
-        private readonly string _connectionString = "";
+        private readonly string _connectionString = "Server=DESKTOP-SM098C1;Database=RepairFirma;TrustServerCertificate=True;Trusted_Connection=True;";
         public RepairDbContext()
         {
 
@@ -43,7 +43,7 @@ namespace EfCoreRepository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=DESKTOP-SM098C1;Database=RepairFirma;TrustServerCertificate=True;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(_connectionString);
         }
     }
 }

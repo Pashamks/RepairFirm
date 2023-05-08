@@ -60,29 +60,31 @@ namespace RepairFirm.Controllers
         {
             var result = list;
             if(model.IsMinEmployeeCount == "on")
-                result = result.Where(x => x.EmployeeCount > model.MinEmployeeCount).Where(x => x.EmployeeCount < model.MaxEmployeeCount).ToList();
+                result = result.Where(x => model.MinEmployeeCount == null ? true : x.EmployeeCount > model.MinEmployeeCount)
+                    .Where(x => model.MaxEmployeeCount == null ? true : x.EmployeeCount < model.MaxEmployeeCount).ToList();
             if(model.IsMinRepairCount == "on")
-                result = result.Where(x => x.RepairCount > model.MinRepairCount).Where(x => x.RepairCount < model.MaxRepairCount).ToList();
+                result = result.Where(x => model.MinRepairCount == null ? true : x.RepairCount > model.MinRepairCount)
+                    .Where(x => model.MaxRepairCount == null ? true : x.RepairCount < model.MaxRepairCount).ToList();
             if(model.IsMinRepairEndDate == "on")
-                result = result.Where(x => x.RepairEndDate > model.MinRepairEndDate).Where(x => x.RepairEndDate < model.MaxRepairEndDate).ToList();
+                result = result.Where(x => model.MinRepairEndDate == null ? true : x.RepairEndDate > model.MinRepairEndDate)
+                    .Where(x => model.MaxRepairEndDate == null ? true : x.RepairEndDate < model.MaxRepairEndDate).ToList();
             if(model.IsMinRepairStartDate == "on")
-                result = result.Where(x => x.RepairStartDate > DateTime.Parse(model.MinRepairStartDate)).Where(x => x.RepairStartDate < model.MaxRepairStartDate).ToList();
+                result = result.Where(x => model.MinRepairStartDate == null ? true : x.RepairStartDate > DateTime.Parse(model.MinRepairStartDate))
+                    .Where(x => model.MaxRepairStartDate == null ? true : x.RepairStartDate < model.MaxRepairStartDate).ToList();
             if(model.IsRepairName == "on")
-                result = result.Where(x => model.RepairName.Contains(x.RepairName)).ToList();
+                result = result.Where(x => model.RepairName == null ? true : model.RepairName.Contains(x.RepairName)).ToList();
             if(model.IsMinRelationToTotalContractHours == "on")
-                result = result.Where(x => x.RelationToTotalContractHours > model.MinRelationToTotalContractHours)
-                    .Where(x => x.RelationToTotalContractHours < model.MaxRelationToTotalContractHours).ToList();
+                result = result.Where(x => model.MinRelationToTotalContractHours == null ? true : x.RelationToTotalContractHours > model.MinRelationToTotalContractHours)
+                    .Where(x => model.MaxRelationToTotalContractHours == null ? true : x.RelationToTotalContractHours < model.MaxRelationToTotalContractHours).ToList();
             if(model.IsMinRelationToTotalContractPrice == "on")
-                result = result.Where(x => x.RelationToTotalContractPrice > model.MinRelationToTotalContractPrice).ToList();
+                result = result.Where(x => model.MinRelationToTotalContractPrice == null ? true : x.RelationToTotalContractPrice > model.MinRelationToTotalContractPrice)
+                    .Where(x => model.MaxRelationToTotalContractPrice == null ? true : x.RelationToTotalContractPrice > model.MaxRelationToTotalContractPrice).ToList();
             if(model.IsMinRepairServiceTotalPrice == "on")
-                result = result.Where(x => x.RepairServiceTotalPrice > model.MinRepairServiceTotalPrice)
-                    .Where(x => x.RelationToTotalContractPrice < model.MaxRelationToTotalContractPrice).ToList();
-            if (model.IsMinRepairServiceTotalPrice == "on")
-                result = result.Where(x => x.RepairServiceTotalPrice > model.MinRepairServiceTotalPrice)
-                    .Where(x => x.RepairServiceTotalPrice < model.MaxRepairServiceTotalPrice).ToList();
+                result = result.Where(x => model.MinRepairServiceTotalPrice == null ? true : x.RepairServiceTotalPrice > model.MinRepairServiceTotalPrice)
+                    .Where(x => model.MaxRepairServiceTotalPrice == null ? true : x.RepairServiceTotalPrice < model.MaxRepairServiceTotalPrice).ToList();
             if (model.IsMinRepairTotalHours == "on")
-                result = result.Where(x => x.RepairTotalHours > model.MinRepairTotalHours)
-                    .Where(x => x.RepairTotalHours < model.MaxRepairTotalHours).ToList();
+                result = result.Where(x => model.MinRepairTotalHours == null ? true : x.RepairTotalHours > model.MinRepairTotalHours)
+                    .Where(x => model.MaxRepairTotalHours == null ? true : x.RepairTotalHours < model.MaxRepairTotalHours).ToList();
 
             list = result;
             return RedirectToAction("Index", "Storage"); ;

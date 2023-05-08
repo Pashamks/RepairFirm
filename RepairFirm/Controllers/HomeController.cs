@@ -20,6 +20,22 @@ namespace RepairFirm.Controllers
         {
             var data = new HomeData();
             data.IsConnected = _repairDbContext.Database.CanConnect();
+            try
+            {
+                data.RepairCountChartDatas = _dbRepository.GetRepairCountChart();
+            }
+            catch (Exception ex)
+            {
+                data.IsConnected = false;
+               data.RepairCountChartDatas = new List<RepairCountChartData>();
+                data.RepairCountChartDatas = new List<RepairCountChartData>();
+                data.DepartmentContractDatas = new List<DepartmentContractData>();
+                data.EmployeeForRepairDatas = new List<EmployeeForRepairData>();
+                data.RepairsPriceForContractsDatas = new Dictionary<string, List<RepairPriceForContract>>();
+                data.RepairsByCitiesDatas = new Dictionary<string, List<RepairsByCitiesData>>();
+
+                return View(data);
+            }
             GenerateDonats();
 
             data.RepairCountChartDatas = _dbRepository.GetRepairCountChart();

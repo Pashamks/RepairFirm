@@ -155,23 +155,24 @@ body {
 }
 
 .custom_nav-container.navbar-expand-lg {
-  .navbar-nav {
-    .nav-item {
-      .nav-link {
-        padding: 10px 15px;
-        color: #060606;
-        text-align: center;
-        text-transform: uppercase;
-      }
+    .navbar-nav {
+        .nav-item {
+            .nav-link {
+                padding: 10px 15px;
+                color: #060606;
+                text-align: center;
+                text-transform: uppercase;
+            }
 
-      &.active,
-      &:hover {
-        .nav-link {
-          color: $primary1;
+            &.active,
+            &:hover {
+                .nav-link {
+                    color: $primary1;
+                }
+            }
         }
-      }
     }
-  }
+}
 }
 
 a,

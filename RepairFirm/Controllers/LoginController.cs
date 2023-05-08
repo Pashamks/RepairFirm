@@ -21,8 +21,9 @@ namespace RepairFirm.Controllers
         public IActionResult Login([FromForm]LoginData data)
         {
             if(_data.Email == data.Email && _data.Password == _data.Password)
-                return View();
+                return RedirectToAction("Index", "Home");
             return View();
+            
         }
     }
 }
