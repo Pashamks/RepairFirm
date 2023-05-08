@@ -11,9 +11,10 @@ builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 builder.Services.AddControllers();
 
 var connection = builder.Configuration.GetSection("ConnectionStrings");
-
 builder.Services.AddSingleton<IDbConnection>(new SqlConnection(connection["RepairFirmaStorage"]));
-builder.Services.AddSingleton(new RepairDbContext());
+builder.Services.AddSingleton(new RepairDbContext(connection["RepairFirma"]));
+builder.Services.AddSingleton(new MetaDbContext(connection["RepairFirmaMeta"]));
+builder.Services.AddSingleton(new StorageDbContext(connection["RepairFirmaStorage"]));
 builder.Services.AddSingleton<IDbRepository, DbRepository>();
 
 

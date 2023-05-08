@@ -22,7 +22,7 @@ namespace RepairFirm.Controllers
         public IActionResult Index()
         {
 
-            if (System.IO.File.Exists("report.pdf"))
+            if (System.IO.File.Exists("wwwroot/report.pdf"))
             {
                 return View();
             }
@@ -57,7 +57,7 @@ namespace RepairFirm.Controllers
             #endregion
             
 
-            var stream = new FileStream("report.pdf", FileMode.CreateNew);
+            var stream = new FileStream("wwwroot/report.pdf", FileMode.CreateNew);
 
             var document = new Document(PageSize.A4, 25, 25, 30, 30);
             var writer = PdfWriter.GetInstance(document, stream);
@@ -280,18 +280,22 @@ namespace RepairFirm.Controllers
             {
                 Alignment = Element.ALIGN_JUSTIFIED
             });
-            //document.Add(new Paragraph(new Phrase { new Chunk("On the third page you can find business analysis task 1 with list of sorted items by quantity and general quantity diagram.") })
-            //{
-            //    Alignment = Element.ALIGN_JUSTIFIED
-            //});
-            //document.Add(new Paragraph(new Phrase { new Chunk("On the forth page you can find business analysis task 2 with list of sorted items by income and general income diagram.") })
-            //{
-            //    Alignment = Element.ALIGN_JUSTIFIED
-            //});
-            //document.Add(new Paragraph(new Phrase { new Chunk("On the forth page you can find business analysis task 3 with list of item with negative income compared to previous period.") })
-            //{
-            //    Alignment = Element.ALIGN_JUSTIFIED
-            //});
+            document.Add(new Paragraph(new Phrase { new Chunk("From the eighth to the eleventh page you can find simplified data tables for all three business tasks.") })
+            {
+                Alignment = Element.ALIGN_JUSTIFIED
+            });
+            document.Add(new Paragraph(new Phrase { new Chunk("From the twelth to eighteenth page you can find diagrams for business analysis task 1.") })
+            {
+                Alignment = Element.ALIGN_JUSTIFIED
+            });
+            document.Add(new Paragraph(new Phrase { new Chunk("From the nineteenth to twentieth page you can find diagrams for business analysis task 2.") })
+            {
+                Alignment = Element.ALIGN_JUSTIFIED
+            });
+            document.Add(new Paragraph(new Phrase { new Chunk("On the twenty one page you can find diagram for business analysis task 3.") })
+            {
+                Alignment = Element.ALIGN_JUSTIFIED
+            });
         }
 
         private void AddContentRow(PdfPTable table, RepairServicesFactModel repair)
@@ -327,9 +331,7 @@ namespace RepairFirm.Controllers
 
         private Bitmap GenerateImgForCity(string title, List<RepairsByCitiesData> data)
         {
-            var plt = new ScottPlot.Plot(550, 250);
-            //plt.ManualDataArea(new PixelPadding(30,30,30,30));
-            
+            var plt = new ScottPlot.Plot(550, 250);            
             plt.Title(title);
             var pie = plt.AddPie(data.Select(x => Convert.ToDouble(x.RepairCount)).ToArray());
             pie.SliceLabels = data.Select(x => x.RepairType).ToArray();
@@ -489,10 +491,7 @@ namespace RepairFirm.Controllers
                 {
                     Bottom = 10.5f
                 });
-            //document.Add(new Paragraph(new Phrase { new Chunk((name).ToUpper()) })
-            //{
-            //    Alignment = Element.ALIGN_CENTER,
-            //});
+
             using (var stream2 = new MemoryStream())
             {
                 bmp.Save(stream2, System.Drawing.Imaging.ImageFormat.Png);

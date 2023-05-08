@@ -5,6 +5,15 @@ namespace EfCoreRepository
 {
     public class RepairDbContext : DbContext
     {
+        private readonly string _connectionString = "";
+        public RepairDbContext()
+        {
+
+        }
+        public RepairDbContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public DbSet<Repair> Repair { get; set; }
         public DbSet<RepairType> RepairType { get; set; }
         public DbSet<RepairType> RepairTypes { get; set; }

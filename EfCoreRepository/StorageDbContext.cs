@@ -6,6 +6,15 @@ namespace EfCoreRepository
 {
     public class StorageDbContext : DbContext
     {
+        private readonly string _connectionString = "";
+        public StorageDbContext()
+        {
+
+        }
+        public StorageDbContext(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
         public DbSet<DimDate> DimDate { get; set; }
         public DbSet<DimCity> DimCity { get; set; }
         public DbSet<DimDepartment> DimDepartment { get; set; }
