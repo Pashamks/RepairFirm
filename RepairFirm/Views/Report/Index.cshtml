@@ -1,4 +1,4 @@
-﻿
+﻿@model RepairFirm.Controllers.GenerateParameter;
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -61,7 +61,9 @@
   </div>
         
     <section class="slider_section ">
-           
+        @if (Model.CanGenerate)
+        {
+            
         <div class="container">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 
@@ -83,8 +85,31 @@
                 </div>
             </div>
           </div>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+
+          <div class="carousel-inner">
+           <div class="carousel-item active">
+              <div class="row justify-content-center">
+                <div class="col-md-6">
+                  <div class="detail-box">
+                    <h1>
+                      REPORT IS NOT GENERATED!
+                    </h1>
+                  </div>
+                </div>
+           
+              </div>
+                </div>
+            </div>
+          </div>
+            </div> 
+        }
         </div>
-      </div>
     </section>
 
   <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>

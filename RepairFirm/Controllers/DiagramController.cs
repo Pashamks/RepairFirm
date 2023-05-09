@@ -114,10 +114,13 @@ namespace RepairFirm.Controllers
                 j = 1;
                 i++;
             }
-
-            dataPoints1 = points[0];
-            dataPoints2 = points[1];
-            dataPoints3 = points[2];
+            if(points.Count > 2)
+            {
+                dataPoints1 = points[0];
+                dataPoints2 = points[1];
+                dataPoints3 = points[2];
+            }
+            
 
 
             ViewBag.DataPoints1 = JsonConvert.SerializeObject(dataPoints1);

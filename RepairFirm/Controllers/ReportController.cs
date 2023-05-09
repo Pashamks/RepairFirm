@@ -15,18 +15,21 @@ namespace RepairFirm.Controllers
     public class ReportController : Controller
     {
         private readonly IDbRepository _dbRepository;
-        public ReportController(IDbRepository dbRepository)
+        private readonly StorageDbContext _storageDbContext;
+        public ReportController(IDbRepository dbRepository, StorageDbContext storageDbContext)
         {
             _dbRepository = dbRepository;
+            _storageDbContext = storageDbContext;
         }
         public IActionResult Index()
         {
 
             if (System.IO.File.Exists("wwwroot/report.pdf"))
             {
-                return View();
+                return View(new GenerateParameter { CanGenerate = true });
             }
-
+            if (_storageDbContext.RepairServicesFact.Count() == 0)
+                return View(new GenerateParameter { CanGenerate = false});
             #region 3 Chart
 
             List<DataPoint> dataPoints1 = new List<DataPoint>();
@@ -49,10 +52,13 @@ namespace RepairFirm.Controllers
                 j = 1;
                 i++;
             }
-
-            dataPoints1 = points[0];
-            dataPoints2 = points[1];
-            dataPoints3 = points[2];
+            if(points.Count > 2)
+            {
+                dataPoints1 = points[0];
+                dataPoints2 = points[1];
+                dataPoints3 = points[2];
+            }
+           
 
             #endregion
             
@@ -106,7 +112,7 @@ namespace RepairFirm.Controllers
             writer.Close();
 
 
-            return View();
+            return View(new GenerateParameter { CanGenerate = true });
         }
 
         private void AddOthersTables(Document document)
@@ -260,7 +266,7 @@ namespace RepairFirm.Controllers
             };
             
             AddHeaderRow(table);
-            foreach (var item in _dbRepository.GetRepairServicesFacts())
+            foreach (var item in StorageController.list == null? _dbRepository.GetRepairServicesFacts() : StorageController.list)
             {
                 AddContentRow(table, item);
             }
@@ -560,5 +566,9 @@ namespace RepairFirm.Controllers
     {"Коридор", "Hallway"}
 };
 
+    }
+    public class GenerateParameter
+    {
+        public bool CanGenerate { get; set; }
     }
 }

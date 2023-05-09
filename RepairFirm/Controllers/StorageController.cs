@@ -9,7 +9,7 @@ namespace RepairFirm.Controllers
     public class StorageController : Controller
     {
         private readonly IDbRepository _dbRepository;
-        private static List<RepairServicesFactModel> list;
+        public static List<RepairServicesFactModel> list;
         public StorageController(IDbRepository dbRepository)
         {
             _dbRepository = dbRepository;
