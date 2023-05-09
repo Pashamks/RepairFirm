@@ -10,9 +10,11 @@ namespace RepairFirm.Controllers
     {
         private readonly IDbRepository _dbRepository;
         public static List<RepairServicesFactModel> list;
-        public StorageController(IDbRepository dbRepository)
+        private readonly StorageDbContext _storageDbContext;
+        public StorageController(IDbRepository dbRepository, StorageDbContext storageDbContext)
         {
             _dbRepository = dbRepository;
+            _storageDbContext = storageDbContext;
         }
         public IActionResult Index()
         {
@@ -53,6 +55,83 @@ namespace RepairFirm.Controllers
             ViewBag.RelationToTotalContractPriceList = result.Select(x => x.RelationToTotalContractPrice).Distinct().ToList();
             ViewBag.RepairStartDateList = result.Select(x => x.RepairStartDate).Distinct().ToList();
             ViewBag.RepairEndDateList = result.Select(x => x.RepairEndDate).Distinct().ToList();
+
+            ViewBag.Cities = _storageDbContext.DimCity.ToList();
+            ViewBag.Repairs = _storageDbContext.DimRepair.ToList();
+            ViewBag.Clients = _storageDbContext.DimClient.ToList();
+            ViewBag.Departments = _storageDbContext.DimCity
+                .Join(_storageDbContext.DimDepartment, x=> x.CityKey, y => y.CityId, 
+                (x,y) => new {City = x.CityName, Address = y.Address}).ToList();
+            ViewBag.Apartments = _storageDbContext.DimClient.Join(_storageDbContext.DimApartment,
+                x => x.ClientKey, y => y.ClientId,
+                (x,y) => new
+                {
+                    ClientName = x.FullName,
+                    Address = y.Address,
+                    RoomCount = y.RoomsCount,
+                    CityId= y.CityId
+                }).Join(_storageDbContext.DimCity, x=> x.CityId, y=>y.CityKey, 
+                (x,y) => new
+                {
+                    ClientName = x.ClientName,
+                    Address = x.Address,
+                    RoomCount = x.RoomCount,
+                    City = y.CityName
+                }).ToList();
+            ViewBag.Rooms = _storageDbContext.DimClient.Join(_storageDbContext.DimApartment,
+                x => x.ClientKey, y => y.ClientId,
+                (x, y) => new
+                {
+                    ClientName = x.FullName,
+                    ApartmentKey = y.ApartmentKey
+                }).Join(_storageDbContext.DimRoom, x=> x.ApartmentKey, y=> y.ApartmentId,
+                (x,y) => new
+                {
+                    ClientName = x.ClientName,
+                    CellingSquare = y.CellingSquare,
+                    WallsSquare = y.WallsSquare,
+                    DoorsCount= y.DoorsCount,
+                    WindowsCount= y.WindowsCount,
+                    FloorSquare= y.FloorSquare,
+                    RoomType = y.RoomType
+                }).ToList();
+            ViewBag.Contracts = _storageDbContext.DimContract.Join(_storageDbContext.DimDepartment, x => x.DepartmentId, y => y.DepartmentKey,
+                (x, y) => new
+                {
+                    CityId = y.CityId,
+                    Prepayment = x.Prepayment,
+                    TotalPrice = x.TotalPrice,
+                    WorkEstimatedPrice = x.WorkEstimatedPrice,
+                    ContractStartDateId = x.ContractStartDateId,
+                    ContractEndDateId = x.ContractEndDateId,
+                }).Join(_storageDbContext.DimCity, x => x.CityId, y => y.CityKey,
+                (x, y) => new
+                {
+                    DepartmentCity = y.CityName,
+                    Prepayment = x.Prepayment,
+                    TotalPrice = x.TotalPrice,
+                    WorkEstimatedPrice = x.WorkEstimatedPrice,
+                    ContractStartDateId = x.ContractStartDateId,
+                    ContractEndDateId = x.ContractEndDateId,
+                }).Join(_storageDbContext.DimDate, x=> x.ContractEndDateId, y=>y.DateKey, 
+                (x,y) => new
+                {
+                    DepartmentCity = x.DepartmentCity,
+                    Prepayment = x.Prepayment,
+                    TotalPrice = x.TotalPrice,
+                    WorkEstimatedPrice = x.WorkEstimatedPrice,
+                    ContractStartDateId = x.ContractStartDateId,
+                    ContractEndDate = new DateTime(y.Year, y.Month, y.Day).ToString("yyyy-MM-dd")
+                }).Join(_storageDbContext.DimDate, x => x.ContractStartDateId, y => y.DateKey,
+                (x, y) => new
+                {
+                    DepartmentCity = x.DepartmentCity,
+                    Prepayment = x.Prepayment,
+                    TotalPrice = x.TotalPrice,
+                    WorkEstimatedPrice = x.WorkEstimatedPrice,
+                    ContractStartDate = new DateTime(y.Year, y.Month, y.Day).ToString("yyyy-MM-dd"),
+                    ContractEndDate = x.ContractEndDate
+                }).ToList();
         }
         [HttpPost]
         [Route("Filter")]

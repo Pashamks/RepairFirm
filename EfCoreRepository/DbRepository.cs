@@ -65,7 +65,7 @@ namespace EfCoreRepository
             var metadata = new MetadataModel();
             using(var ctx = new MetaDbContext())
             {
-                var lastload = ctx.LoadHistory.OrderBy(x => x.LoadHistoryId).First();
+                var lastload = ctx.LoadHistory.OrderByDescending(x => x.LoadHistoryId).First();
                 metadata.AvarageQueryTime = lastload.AvarageQueryTime;
                 metadata.LastLoadDate = lastload.LastLoadDate;
                 metadata.LoadDimentionsCount = lastload.LoadDimentionsCount;
